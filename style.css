@@ -20,10 +20,17 @@ h1 {
   position: relative;
 }
 
-h1 button {
+h1 button#show {
   position: absolute;
   right: 0;
   transform: translate(120%, -50%);
+  z-index: 2;
+}
+
+h1 button#import {
+  position: absolute;
+  left: 0;
+  transform: translate(-120%, -50%);
   z-index: 2;
 }
 
@@ -47,10 +54,16 @@ h1 button {
   background-color: transparent;
 }
 
-.clear {
+.clear#clear {
   position: absolute;
   bottom: 30px;
   left: 30px;
+}
+
+.clear#export {
+  position: absolute;
+  bottom: 30px;
+  left: 150px;
 }
 
 .cards {
@@ -188,3 +201,9 @@ h1 button {
   min-width: 500px;
   max-width: 100%;
 }
+
+.fa-arrow-left:before{content:"\f060"}
+.fa-arrow-left:before{content:"←"}
+.fa-arrow-right:before{content:"\f061"}
+.fa-plus:before{content:"\f067"}
+.fa-trash:before{content:"\f1f8"}
