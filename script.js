@@ -56,12 +56,19 @@ function createCard(data, index) {
     </button>
     <div class="inner-card-front">
     <p>
-      ${data.question}
+      ${data.name}
     </p>
     </div>
     <div class="inner-card-back">
     <p>
-      ${data.answer}
+      <b>etyma:</b><br/>
+      ${data.name}<br/>
+      ${data.value}
+      <br/>
+      <br/>
+      <b>example:</b><br/>
+      ${data.example.name}
+      <br/>${data.example.value}
     </p>
     </div>
     <button id="delete">
@@ -167,14 +174,8 @@ function getExtraCardsData(input) {
     reader.onload = function () {
         etymas = JSON.parse(reader.result);
         etymas.forEach((data) => {
-            const newCard = {question: data.name,
-                answer: `
-                <b>etyma:</b><br/>
-                ${data.name}<br/>${data.value}<br/><br/>
-                <b>example:</b><br/>
-                ${data.example.name}<br/>${data.example.value}`};
-            createCard(newCard);
-            cardsData.push(newCard);
+            createCard(data);
+            cardsData.push(data);
             setCardsData(cardsData);
         });
     }
