@@ -9,6 +9,7 @@ const answerEl = document.getElementById('answer');
 const addCardBtn = document.getElementById('add-card');
 const clearBtn = document.getElementById('clear');
 const addContainer = document.getElementById('add-container');
+const exportCards = document.getElementById('export');
 
 // Keep track of current card
 let currentActiveCard = 0;
@@ -184,4 +185,17 @@ clearBtn.addEventListener('click', () => {
     localStorage.clear();
     cardsContainer.innerHTML = '';
     window.location.reload();
+});
+
+// Export cards button
+exportCards.addEventListener('click', () => {
+    let link = document.createElement('a');
+    link.download = 'etyma.json';
+
+    let blob = new Blob([JSON.stringify(cardsData)], {type: 'text/plain'});
+    link.href = URL.createObjectURL(blob);
+
+    link.click();
+
+    URL.revokeObjectURL(link.href);
 });
