@@ -4,8 +4,10 @@ const nextBtn = document.getElementById('next');
 const currentEl = document.getElementById('current');
 const showBtn = document.getElementById('show');
 const hideBtn = document.getElementById('hide');
-const questionEl = document.getElementById('question');
-const answerEl = document.getElementById('answer');
+const etyma_name = document.getElementById('etyma-name');
+const etyma_value = document.getElementById('etyma-value');
+const etyma_example_name = document.getElementById('etyma-example-name');
+const etyma_example_value = document.getElementById('etyma-example-value');
 const addCardBtn = document.getElementById('add-card');
 const clearBtn = document.getElementById('clear');
 const addContainer = document.getElementById('add-container');
@@ -143,16 +145,30 @@ showBtn.addEventListener('click', () => addContainer.classList.add('show'));
 hideBtn.addEventListener('click', () => addContainer.classList.remove('show'));
 
 // Add new card
+//
+// 大致创建规则如下
+// 词根部分填入词根
+// 释义部分填入释义
+// 例子部分填入例子以及例子释义
 addCardBtn.addEventListener('click', () => {
-    const question = questionEl.value;
-    const answer = answerEl.value;
-    if (question.trim() && answer.trim()) {
-        const newCard = { question, answer:answer.replaceAll("\n", "<br>") };
+    const name = etyma_name.value;
+    const value = etyma_value.value;
+    if (name.trim() && value.trim()) {
+        const newCard = {
+	    id:`${cardsData.length+1}`,
+	    name,
+	    value,
+	    example:{
+		name: etyma_example_name.value,
+		value:etyma_example_value.value
+	    },
+	    belong:'nil'
+	};
 
         createCard(newCard);
 
-        questionEl.value = '';
-        answerEl.value = '';
+        etyma_name.value = '';
+        etyma_value.value = '';
 
         addContainer.classList.remove('show');
 
