@@ -60,16 +60,15 @@ function createCard(data, index) {
     </p>
     </div>
     <div class="inner-card-back">
-    <p>
-      <b>etyma:</b><br/>
-      ${data.name}<br/>
-      ${data.value}
-      <br/>
-      <br/>
-      <b>example:</b><br/>
-      ${data.example.name}
-      <br/>${data.example.value}
-    </p>
+    <dl>
+    <dt><b>etyma:</b></dt>
+    <dd>${data.name}</dd>
+    <dd>${data.value}<dd>
+
+    <dt><b>example:</b></dt>
+    <dd>${data.example.name}</dd>
+    <dd>${data.example.value}</dd>
+    </dl>
     </div>
     <button id="delete">
     <i class="fas show-answer">删除</i>
