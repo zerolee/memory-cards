@@ -12,14 +12,15 @@
       <i class="fas fa-trash"></i> Clear Cards
     </button>
 
-    <button id="export" class="clear btn">
-      <i class="fas fa-trash"></i> Export Cards
+    <button id="export" class="export btn">
+      <i class="fas fa-export"></i> Export Cards
     </button>
 
     <h1>
-      <button id="import" class="btn btn-small">
-	<i class="fas fa-plus">导入外部数据</i>
-      </button>
+      <span class="btn btn-small btn-input-file">
+	<i class="fa-plus"></i>导入外部数据
+	<input type="file" class="input-file" onchange="getExtraCardsData(this)" />
+      </span>
       Memory Cards
       <button id="show" class="btn btn-small">
         <i class="fas fa-plus"></i> Add New Card
@@ -60,13 +61,13 @@
 
     <div class="navigation">
       <button id="prev" class="nav-button">
-        <i class="fas fa-arrow-left">left</i>
+        <i class="fas fa-arrow-left"></i>
       </button>
 
       <p id="current"></p>
 
       <button id="next" class="nav-button">
-        <i class="fas fa-arrow-right">right</i>
+        <i class="fas fa-arrow-right"></i>
       </button>
     </div>
 
@@ -74,7 +75,7 @@
       <h1>
         Add New Card
         <button id="hide" class="btn btn-small btn-ghost">
-          <i class="fas fa-times"></i>
+          <i class="fas fa-minus"></i>
         </button>
       </h1>
 

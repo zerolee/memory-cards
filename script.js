@@ -50,6 +50,9 @@ function createCard(data, index) {
 
   card.innerHTML = `
   <div class="inner-card">
+  <button id="edit">
+    <i class="fas show-answer">编辑</i>
+  </button>
   <div class="inner-card-front">
     <p>
       ${data.question}
@@ -60,6 +63,9 @@ function createCard(data, index) {
       ${data.answer}
     </p>
   </div>
+  <button id="delete">
+    <i class="fas show-answer">删除</i>
+  </button>
 </div>
   `;
 
@@ -133,9 +139,8 @@ hideBtn.addEventListener('click', () => addContainer.classList.remove('show'));
 addCardBtn.addEventListener('click', () => {
   const question = questionEl.value;
   const answer = answerEl.value;
-
   if (question.trim() && answer.trim()) {
-    const newCard = { question, answer };
+    const newCard = { question, answer:answer.replaceAll("\n", "<br>") };
 
     createCard(newCard);
 
@@ -148,6 +153,31 @@ addCardBtn.addEventListener('click', () => {
     setCardsData(cardsData);
   }
 });
+
+
+// Import other card
+function getExtraCardsData(input) {
+    let file = input.files[0];
+
+    let reader = new FileReader();
+
+    reader.readAsText(file);
+    let etymas;
+    reader.onload = function () {
+        etymas = JSON.parse(reader.result);
+	etymas.forEach((data) => {
+	    const newCard = {question: data.name,
+		answer: `
+		<b>etyma:</b><br/>
+		${data.name}<br/>${data.value}<br/><br/>
+                <b>example:</b><br/>
+                ${data.example.name}<br/>${data.example.value}`};
+	    createCard(newCard);
+	    cardsData.push(newCard);
+	    setCardsData(cardsData);
+	});
+    }
+}
 
 // Clear cards button
 clearBtn.addEventListener('click', () => {
