@@ -345,7 +345,12 @@ h1 button#show {
 #current {
     width: 70px;
     text-align: center;
+    font-size: 15px;
     border: none;
+}
+
+.navigation .btn-marker {
+    background-color: #9fa4a8;
 }
 
 .fa-arrow-left:before{content:"⬅️"}

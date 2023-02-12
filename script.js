@@ -20,6 +20,7 @@ const form_submit = document.getElementById('etyma-form');
 const etyma_radom = document.getElementById('etyma-radom');
 const etyma_edit = document.getElementById('etyma-edit');
 const etyma_delete = document.getElementById('etyma-delete');
+const etyma_marker = document.getElementById('etyma-marker');
 
 
 // Keep track of current card
@@ -32,7 +33,6 @@ let New = true;
 // Store DOM cards
 const cardsEl = [];
 const cardsElAll = [];
-
 
 // Store card data
 const cardsData = getCardsData();
@@ -71,6 +71,7 @@ function createCard(data, index) {
   `;
 
     card.addEventListener('click', () => card.classList.toggle('show-answer'));
+    etymaMarker(data);
 
     // Add to DOM cards
     cardsEl.push(card);
@@ -90,6 +91,7 @@ etyma_delete.addEventListener('click', () => {
     }
     cardsEl[currentActiveCard].className = 'card active'
     updateCurrentText();
+    etymaMarker(cardsData[currentActiveCard]);
     // 存储数据，不刷新页面
     localStorage.setItem('cards', JSON.stringify(cardsData));
 });
@@ -128,6 +130,7 @@ function specifyCards(first, second) {
 	currentActiveCard = first;
 	cardsEl[currentActiveCard].className = 'card active';
 	updateCurrentText();
+	etymaMarker(cardsData[currentActiveCard]);
     }
 }
 
@@ -161,6 +164,7 @@ nextBtn.addEventListener('click', () => {
     cardsEl[currentActiveCard].className = 'card active';
 
     updateCurrentText();
+    etymaMarker(cardsData[currentActiveCard]);
 });
 
 // Prev button
@@ -176,11 +180,16 @@ prevBtn.addEventListener('click', () => {
     cardsEl[currentActiveCard].className = 'card active';
 
     updateCurrentText();
+    etymaMarker(cardsData[currentActiveCard]);
 });
 
 // radom cards
 etyma_radom.addEventListener('click', () => {
-    specifyCards(Math.floor(Math.random()*cardsEl.length), cardsEl.length);
+    let first;
+    do {
+	first = Math.floor(Math.random()*cardsEl.length);
+    } while(cardsData[first].marker);
+    specifyCards(first, cardsEl.length);
 });
 
 // Show add container
@@ -194,6 +203,28 @@ hideBtn.addEventListener('click', () => {
     etyma_example_name.value = '';
     etyma_example_value.value = '';
 });
+
+// Marker
+etyma_marker.addEventListener('click', () => {
+    let data = cardsData[currentActiveCard];
+    if (typeof(data.marker) != "undefined" && data.marker) {
+	etyma_marker.classList.remove('btn-marker');
+	data.marker = false;
+    } else {
+	etyma_marker.classList.add('btn-marker');
+	data.marker = true;
+    }
+});
+
+// 收藏了才加颜色，否则是纯白色
+function etymaMarker(data) {
+    if (typeof(data.marker) != "undefined" && data.marker) {
+	etyma_marker.classList.add('btn-marker');
+    } else {
+	etyma_marker.classList.remove('btn-marker');
+    }
+}
+
 
 // Add new card
 //
@@ -213,7 +244,8 @@ addCardBtn.addEventListener('click', () => {
                 name: etyma_example_name.value,
                 value:etyma_example_value.value
             },
-            belong:'nil'
+            belong:'nil',
+	    marker:false
         };
 
         etyma_name.value = '';
