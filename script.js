@@ -16,6 +16,7 @@ const exportCards = document.getElementById('export');
 const listCards = document.getElementById('list');
 const hideCards = document.getElementById('etyma-hide')
 const foldCards = document.getElementById('fold');
+const form_submit = document.getElementById('etyma-form');
 
 
 // Keep track of current card
@@ -82,8 +83,30 @@ function createCard(data, index) {
 
 // Show number of cards
 function updateCurrentText() {
-    currentEl.innerText = `${currentActiveCard + 1}/${cardsEl.length}`;
+    currentEl.value = `${currentActiveCard + 1}/${cardsEl.length}`;
 }
+
+form_submit.addEventListener('submit', e => {
+    e.preventDefault();
+    specifyCards();
+});
+
+function specifyCards() {
+    let value = currentEl.value.split('/');
+    let first = value[0] - 1;
+    if (first >= 0 && first < cardsEl.length && value[1] == cardsEl.length) {
+	if (first < currentActiveCard) {
+	    cardsEl[currentActiveCard].className = 'card right';
+	} else if (first > currentActiveCard){
+	    cardsEl[currentActiveCard].className = 'card left';
+	}
+
+	currentActiveCard = first;
+	cardsEl[currentActiveCard].className = 'card active';
+	updateCurrentText();
+    }
+}
+
 
 // Get cards from local storage
 function getCardsData() {

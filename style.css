@@ -340,6 +340,11 @@ h1 button#show {
   background-color: #9fa4a8;
 }
 
+#current {
+    width: 70px;
+    text-align: center;
+    border: none;
+}
 
 .fa-arrow-left:before{content:"⬅️"}
 .fa-arrow-right:before{content:"➡️"}

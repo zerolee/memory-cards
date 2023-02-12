@@ -17,5 +17,4 @@ Flash card app for learning. Display, add and remove memory cards with questions
 3. 鼠标滑动（手机屏幕显示为手势操作）
 4. 编辑单个词条
 5. 删除单个词条
-6. 下面的数字可以编辑（可以指定去往的词条目）
-
+6. 导出的文件可以重命名
