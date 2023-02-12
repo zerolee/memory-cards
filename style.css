@@ -84,6 +84,12 @@ h1 button#show {
     right: 30px;
 }
 
+.fold {
+  position: absolute;
+  top: -15px;
+  left: 0;
+}
+
 .cards {
   perspective: 1000px;
   position: relative;
@@ -240,7 +246,7 @@ h1 button#show {
 }
 
 .etyma-container h1 {
-    margin: 50px 0 30px;
+    margin: 0 auto;
     text-align: center;
 }
 
@@ -344,3 +350,4 @@ h1 button#show {
 .fa-export:before{content:"🏧"}
 .fa-chevron-down:before{content:"⬇️"}
 .fa-list:before{content:"🛂"}
+.fa-fold:before{content:"🛃"}

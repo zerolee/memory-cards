@@ -15,6 +15,7 @@ const etymaContainer = document.getElementById('etyma-container');
 const exportCards = document.getElementById('export');
 const listCards = document.getElementById('list');
 const hideCards = document.getElementById('etyma-hide')
+const foldCards = document.getElementById('fold');
 
 
 // Keep track of current card
@@ -221,6 +222,9 @@ function listAllCards() {
     const etyma_toggles = document.querySelectorAll('.etyma-toggle');
     etyma_toggles.forEach(toggle =>
         toggle.addEventListener('click', () => toggle.parentNode.classList.toggle('active')));
+    foldCards.addEventListener('click', () => {
+	etyma_toggles.forEach(toggle => toggle.parentNode.classList.toggle('active'));
+    });
 }
 
 // List a single card in DOM
@@ -252,3 +256,4 @@ function listCard(data, index) {
 
 
 listAllCards();
+
