@@ -18,10 +18,16 @@ const hideCards = document.getElementById('etyma-hide')
 const foldCards = document.getElementById('fold');
 const form_submit = document.getElementById('etyma-form');
 const etyma_radom = document.getElementById('etyma-radom');
+const etyma_edit = document.getElementById('etyma-edit');
+const etyma_delete = document.getElementById('etyma-delete');
 
 
 // Keep track of current card
 let currentActiveCard = 0;
+
+// New or Edit
+// 提交的词根究竟是原有基础上修改的，还是新添加的
+let New = true;
 
 // Store DOM cards
 const cardsEl = [];
@@ -47,28 +53,20 @@ function createCard(data, index) {
 
     card.innerHTML = `
     <div class="inner-card">
-    <button id="edit">
-    <i class="fas show-answer">编辑</i>
-    </button>
-    <div class="inner-card-front">
-    <p>
-      ${data.name}
-    </p>
-    </div>
-    <div class="inner-card-back">
-    <dl>
-    <dt><b>etyma:</b></dt>
-    <dd>${data.name}</dd>
-    <dd>${data.value}<dd>
+      <div class="inner-card-front">
+        <p>${data.name}</p>
+      </div>
+      <div class="inner-card-back">
+        <dl>
+          <dt><b>etyma:</b></dt>
+          <dd>${data.name}</dd>
+          <dd>${data.value}<dd>
 
-    <dt><b>example:</b></dt>
-    <dd>${data.example.name}</dd>
-    <dd>${data.example.value}</dd>
-    </dl>
-    </div>
-    <button id="delete">
-    <i class="fas show-answer">删除</i>
-    </button>
+          <dt><b>example:</b></dt>
+          <dd>${data.example.name}</dd>
+          <dd>${data.example.value}</dd>
+        </dl>
+      </div>
     </div>
   `;
 
@@ -81,6 +79,32 @@ function createCard(data, index) {
 
     updateCurrentText();
 }
+
+// Delete Card
+etyma_delete.addEventListener('click', () => {
+    cardsContainer.removeChild(cardsEl[currentActiveCard]);
+    cardsEl.splice(currentActiveCard, 1);
+    cardsData.splice(currentActiveCard, 1);
+    if (currentActiveCard > cardsEl.length - 1) {
+	currentActiveCard = cardsEl.length - 1;
+    }
+    cardsEl[currentActiveCard].className = 'card active'
+    updateCurrentText();
+    // 存储数据，不刷新页面
+    localStorage.setItem('cards', JSON.stringify(cardsData));
+});
+
+
+// Edit Card
+etyma_edit.addEventListener('click', () => {
+    addContainer.classList.add('show');
+    etyma_name.value = cardsData[currentActiveCard].name;
+    etyma_value.value = cardsData[currentActiveCard].value;
+    etyma_example_name.value = cardsData[currentActiveCard].example.name;
+    etyma_example_value.value = cardsData[currentActiveCard].example.value;
+    New = false;
+});
+
 
 // Show number of cards
 function updateCurrentText() {
@@ -162,8 +186,14 @@ etyma_radom.addEventListener('click', () => {
 // Show add container
 showBtn.addEventListener('click', () => addContainer.classList.add('show'));
 // Hide add container
-hideBtn.addEventListener('click', () => addContainer.classList.remove('show'));
-
+hideBtn.addEventListener('click', () => {
+    addContainer.classList.remove('show')
+    New = true;
+    etyma_name.value = '';
+    etyma_value.value = '';
+    etyma_example_name.value = '';
+    etyma_example_value.value = '';
+});
 
 // Add new card
 //
@@ -186,14 +216,17 @@ addCardBtn.addEventListener('click', () => {
             belong:'nil'
         };
 
-        createCard(newCard);
-
         etyma_name.value = '';
         etyma_value.value = '';
+	etyma_example_name.value = '';
+	etyma_example_value.value = '';
 
         addContainer.classList.remove('show');
-
-        cardsData.push(newCard);
+	if (New) {
+	    cardsData.push(newCard);
+	} else {
+	    cardsData.splice(currentActiveCard, 1, newCard);
+	}
         setCardsData(cardsData);
     }
 });
@@ -284,4 +317,3 @@ function listCard(data, index) {
 
 
 listAllCards();
-

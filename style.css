@@ -171,8 +171,8 @@ h1 button#show {
 }
 
 .navigation {
-  display: flex;
-  margin: 20px 0;
+    display: flex;
+    margin: 20px 0;
 }
 
 .navigation .nav-button {
@@ -182,8 +182,10 @@ h1 button#show {
   font-size: 16px;
 }
 
-.navigation p {
-  margin: 0 25px;
+.navigation .btn-small {
+    background-color: transparent;
+    margin: 0 5px;
+    cursor: pointer;
 }
 
 .add-container {
