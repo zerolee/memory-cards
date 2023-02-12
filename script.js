@@ -11,31 +11,22 @@ const etyma_example_value = document.getElementById('etyma-example-value');
 const addCardBtn = document.getElementById('add-card');
 const clearBtn = document.getElementById('clear');
 const addContainer = document.getElementById('add-container');
+const etymaContainer = document.getElementById('etyma-container');
 const exportCards = document.getElementById('export');
+const listCards = document.getElementById('list');
+const hideCards = document.getElementById('etyma-hide')
+
 
 // Keep track of current card
 let currentActiveCard = 0;
 
 // Store DOM cards
 const cardsEl = [];
+const cardsElAll = [];
+
 
 // Store card data
 const cardsData = getCardsData();
-
-// const cardsData = [
-//   {
-//     question: 'What must a variable begin with?',
-//     answer: 'A letter, $ or _'
-//   },
-//   {
-//     question: 'What is a variable?',
-//     answer: 'Container for a piece of data'
-//   },
-//   {
-//     question: 'Example of Case Sensitive Variable',
-//     answer: 'thisIsAVariable'
-//   }
-// ];
 
 // Create all cards
 function createCards() {
@@ -144,6 +135,7 @@ showBtn.addEventListener('click', () => addContainer.classList.add('show'));
 // Hide add container
 hideBtn.addEventListener('click', () => addContainer.classList.remove('show'));
 
+
 // Add new card
 //
 // 大致创建规则如下
@@ -155,15 +147,15 @@ addCardBtn.addEventListener('click', () => {
     const value = etyma_value.value;
     if (name.trim() && value.trim()) {
         const newCard = {
-	    id:`${cardsData.length+1}`,
-	    name,
-	    value,
-	    example:{
-		name: etyma_example_name.value,
-		value:etyma_example_value.value
-	    },
-	    belong:'nil'
-	};
+            id:`${cardsData.length+1}`,
+            name,
+            value,
+            example:{
+                name: etyma_example_name.value,
+                value:etyma_example_value.value
+            },
+            belong:'nil'
+        };
 
         createCard(newCard);
 
@@ -215,3 +207,48 @@ exportCards.addEventListener('click', () => {
 
     URL.revokeObjectURL(link.href);
 });
+
+
+// 显示全部列表
+// Show add container
+listCards.addEventListener('click', () => etymaContainer.classList.add('show'));
+// Hide add container
+hideCards.addEventListener('click', () => etymaContainer.classList.remove('show'));
+
+// List All Cards
+function listAllCards() {
+    cardsData.forEach((data, index) => listCard(data, index));
+    const etyma_toggles = document.querySelectorAll('.etyma-toggle');
+    etyma_toggles.forEach(toggle =>
+        toggle.addEventListener('click', () => toggle.parentNode.classList.toggle('active')));
+}
+
+// List a single card in DOM
+function listCard(data, index) {
+    const card = document.createElement('div');
+    card.classList.add('etyma');
+
+    if (index === 0) {
+        card.classList.add('active');
+    }
+
+    card.innerHTML = `
+    <h3 class="etyma-title">${data.id}.&nbsp;${data.name}</h3>
+    <p class="etyma-text">
+    ${data.name}:&nbsp;${data.value}<br />
+    ${data.example.name}:&nbsp;${data.example.value}
+    </p>
+    <button class="etyma-toggle">
+    <i class="fa-chevron-down"></i>
+    <i class="fa-times"></i>
+    </button>
+    `;
+
+    // Add to DOM cards
+    cardsElAll.push(card);
+
+    etymaContainer.appendChild(card);
+}
+
+
+listAllCards();

@@ -16,9 +16,12 @@
       <i class="fas fa-export"></i> Export Cards
     </button>
 
+    <button id="list" class="list btn">
+      <i class="fa-list"></i> List All Cards
+    </button>
     <h1>
       <span class="btn btn-small btn-input-file">
-	<i class="fa-plus"></i>导入外部数据
+	<i class="fa-plus"></i> 导入外部数据
 	<input type="file" class="input-file" onchange="getExtraCardsData(this)" />
       </span>
       Memory Cards
@@ -70,7 +73,7 @@
         <i class="fas fa-arrow-right"></i>
       </button>
     </div>
-
+    <!-- 添加新的词根 -->
     <div id="add-container" class="add-container">
       <h1>
         Add New Card
@@ -100,6 +103,15 @@
       </button>
     </div>
 
+    <!-- 显示全部的卡片（词根） -->
+    <div id="etyma-container" class="etyma-container">
+      <h1>
+	全部的词根
+	<button id="etyma-hide" class="btn btn-small btn-ghost">
+	  <i class="fa-minus"></i>
+	</button>
+      </h1>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>

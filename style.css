@@ -78,6 +78,12 @@ h1 button#show {
   left: 150px;
 }
 
+.list {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+}
+
 .cards {
   perspective: 1000px;
   position: relative;
@@ -214,9 +220,127 @@ h1 button#show {
   max-width: 100%;
 }
 
+.etyma-container {
+    opacity: 0;
+    z-index: -1;
+    background-color: #f0f0f0;
+    border-top: 2px solid #eee;
+    padding: 10px 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    overflow: scroll;
+    transition: 0.3s ease;
+}
+
+.etyma-container.show {
+    opacity: 1;
+    z-index: 2;
+}
+
+.etyma-container h1 {
+    margin: 50px 0 30px;
+    text-align: center;
+}
+
+.etyma {
+    background-color: transparent;
+    border: 1px solid #9fa4a8;
+    border-radius: 10px;
+    margin: 5px auto;
+    padding: 30px;
+    width: 500px;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s ease;
+}
+
+
+.etyma.active {
+  background-color: #fff;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.etyma.active::before,
+.etyma.active::after {
+  content: '\f075';
+  font-family: 'Font Awesome 5 Free';
+  color: #2ecc71;
+  font-size: 7rem;
+  position: absolute;
+  opacity: 0.2;
+  top: 20px;
+  left: 20px;
+  z-index: 0;
+}
+.etyma.active::before {
+  color: #3498db;
+  top: -10px;
+  left: -30px;
+  transform: rotateY(180deg);
+}
+
+
+.etyma-title {
+  margin: 0 35px 0 0;
+}
+
+.etyma-text {
+  display: none;
+  margin: 30px 0 0;
+}
+
+.etyma.active .etyma-text {
+  display: block;
+}
+
+.etyma-toggle {
+  background-color: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  padding: 0;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  height: 30px;
+  width: 30px;
+}
+
+
+.etyma-toggle:focus {
+  outline: 0;
+}
+
+.etyma-toggle .fa-times {
+  display: none;
+}
+
+.etyma.active .etyma-toggle .fa-times {
+  color: #fff;
+  display: block;
+}
+
+.etyma.active .etyma-toggle .fa-chevron-down {
+  display: none;
+}
+
+.etyma.active .etyma-toggle {
+  background-color: #9fa4a8;
+}
+
+
 .fa-arrow-left:before{content:"⬅️"}
 .fa-arrow-right:before{content:"➡️"}
 .fa-plus:before{content:"➕"}
 .fa-minus:before{content:"✖️"}
+.fa-times:before{content:"✖️"}
 .fa-trash:before{content:"🚮"}
 .fa-export:before{content:"🏧"}
+.fa-chevron-down:before{content:"⬇️"}
+.fa-list:before{content:"🛂"}
