@@ -17,6 +17,7 @@ const listCards = document.getElementById('list');
 const hideCards = document.getElementById('etyma-hide')
 const foldCards = document.getElementById('fold');
 const form_submit = document.getElementById('etyma-form');
+const etyma_radom = document.getElementById('etyma-radom');
 
 
 // Keep track of current card
@@ -88,13 +89,12 @@ function updateCurrentText() {
 
 form_submit.addEventListener('submit', e => {
     e.preventDefault();
-    specifyCards();
+    let value = currentEl.value.split('/');
+    specifyCards(value[0] - 1, value[1]);
 });
 
-function specifyCards() {
-    let value = currentEl.value.split('/');
-    let first = value[0] - 1;
-    if (first >= 0 && first < cardsEl.length && value[1] == cardsEl.length) {
+function specifyCards(first, second) {
+    if (first >= 0 && first < cardsEl.length && second == cardsEl.length) {
 	if (first < currentActiveCard) {
 	    cardsEl[currentActiveCard].className = 'card right';
 	} else if (first > currentActiveCard){
@@ -152,6 +152,11 @@ prevBtn.addEventListener('click', () => {
     cardsEl[currentActiveCard].className = 'card active';
 
     updateCurrentText();
+});
+
+// radom cards
+etyma_radom.addEventListener('click', () => {
+    specifyCards(Math.floor(Math.random()*cardsEl.length), cardsEl.length);
 });
 
 // Show add container
