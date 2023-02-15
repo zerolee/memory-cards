@@ -117,6 +117,7 @@ etyma_edit.addEventListener('click', () => {
     etyma_example_name.value = cardsData[currentActiveCard].example.name;
     etyma_example_value.value = cardsData[currentActiveCard].example.value;
     New = false;
+    document.querySelector('div#add-container>h1').firstChild.replaceWith('Edit Cards');
 });
 
 
@@ -224,6 +225,7 @@ hideBtn.addEventListener('click', () => {
     etyma_value.value = '';
     etyma_example_name.value = '';
     etyma_example_value.value = '';
+    document.querySelector('div#add-container>h1').firstChild.replaceWith('Add New Card');
 });
 
 // Marker
@@ -287,7 +289,15 @@ addCardBtn.addEventListener('click', () => {
 
         addContainer.classList.remove('show');
 	if (New) {
-	    cardsData.push(newCard);
+	    // 查找第一个位于 cardsData[ id -1 ] 之前 id 小于 id-1 的
+	    let insertIndex = id - 1;
+	    if (insertIndex > cardsData.length) {
+		insertIndex = cardsData.length;
+	    }
+	    while(cardsData[insertIndex-1].id > id) {
+		insertIndex--;
+	    }
+	    cardsData.splice(insertIndex, 0, newCard);
 	} else {
 	    cardsData.splice(currentActiveCard, 1, newCard);
 	}
