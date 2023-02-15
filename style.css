@@ -1,47 +1,45 @@
-@import url('https://fonts.googleapis.com/css?family=Lato:300,500,700&display=swap');
-
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  margin: 0;
-  overflow: hidden;
-  font-family: 'Lato', sans-serif;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Lato', sans-serif;
 }
 
 h1 {
-  position: relative;
+    position: relative;
 }
 
 h1 button#show {
-  position: absolute;
-  right: 0;
-  transform: translate(120%, -50%);
-  z-index: 2;
+    position: absolute;
+    right: 0;
+    transform: translate(120%, -50%);
+    z-index: 2;
 }
 
 
 
 .btn {
-  cursor: pointer;
-  background-color: #fff;
-  border: 1px solid #aaa;
-  border-radius: 3px;
-  font-size: 14px;
-  margin-top: 20px;
-  padding: 10px 15px;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    font-size: 14px;
+    margin-top: 20px;
+    padding: 10px 15px;
 }
 
 .btn-small {
-  font-size: 12px;
-  padding: 5px 10px;
+    font-size: 12px;
+    padding: 5px 10px;
 }
 
 .input-file {
@@ -62,20 +60,20 @@ h1 button#show {
 }
 
 .btn-ghost {
-  border: 0;
-  background-color: transparent;
+    border: 0;
+    background-color: transparent;
 }
 
 .clear {
-  position: absolute;
-  bottom: 30px;
-  left: 30px;
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
 }
 
 .export {
-  position: absolute;
-  bottom: 30px;
-  left: 150px;
+    position: absolute;
+    bottom: 30px;
+    left: 150px;
 }
 
 .list {
@@ -85,89 +83,89 @@ h1 button#show {
 }
 
 .fold {
-  position: absolute;
-  top: -15px;
-  left: 0;
+    position: absolute;
+    top: -15px;
+    left: 0;
 }
 
 .cards {
-  perspective: 1000px;
-  position: relative;
-  height: 300px;
-  width: 500px;
-  max-width: 100%;
+    perspective: 1000px;
+    position: relative;
+    height: 300px;
+    width: 500px;
+    max-width: 100%;
 }
 
 .card {
-  position: absolute;
-  opacity: 0;
-  font-size: 1.5em;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  transform: translateX(50%) rotateY(-10deg);
-  transition: transform 0.4s ease, opacity 0.4s ease;
+    position: absolute;
+    opacity: 0;
+    font-size: 1.5em;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transform: translateX(50%) rotateY(-10deg);
+    transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
 .card.active {
-  cursor: pointer;
-  opacity: 1;
-  z-index: 10;
-  transform: translateX(0) rotateY(0deg);
+    cursor: pointer;
+    opacity: 1;
+    z-index: 10;
+    transform: translateX(0) rotateY(0deg);
 }
 
 .card.left {
-  transform: translateX(-50%) rotateY(10deg);
+    transform: translateX(-50%) rotateY(10deg);
 }
 
 .inner-card {
-  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
-  border-radius: 4px;
-  height: 100%;
-  width: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.4s ease;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.4s ease;
 }
 
 .card.show-answer .inner-card {
-  transform: rotateX(180deg);
+    transform: rotateX(180deg);
 }
 
 .inner-card-front,
 .inner-card-back {
-  backface-visibility: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  background: #fff;
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background: #fff;
 }
 
 .inner-card-front {
-  transform: rotateX(0deg);
-  z-index: 2;
+    transform: rotateX(0deg);
+    z-index: 2;
 }
 
 .inner-card-back {
-  transform: rotateX(180deg);
+    transform: rotateX(180deg);
 }
 
 .inner-card-front::after,
 .inner-card-back::after {
-  content: '\f021  Flip';
-  font-family: 'Font Awesome 5 Free', Lato, sans-serif;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-weight: bold;
-  font-size: 16px;
-  color: #ddd;
+    content: '\f021  Flip';
+    font-family: 'Font Awesome 5 Free', Lato, sans-serif;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    color: #ddd;
 }
 
 .navigation {
@@ -176,10 +174,10 @@ h1 button#show {
 }
 
 .navigation .nav-button {
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  font-size: 16px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 16px;
 }
 
 .navigation .btn-small {
@@ -189,43 +187,43 @@ h1 button#show {
 }
 
 .add-container {
-  opacity: 0;
-  z-index: -1;
-  background-color: #f0f0f0;
-  border-top: 2px solid #eee;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 0;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  transition: 0.3s ease;
+    opacity: 0;
+    z-index: -1;
+    background-color: #f0f0f0;
+    border-top: 2px solid #eee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    transition: 0.3s ease;
 }
 
 .add-container.show {
-  opacity: 1;
-  z-index: 2;
+    opacity: 1;
+    z-index: 2;
 }
 
 .add-container h3 {
-  margin: 10px 0;
+    margin: 10px 0;
 }
 
 .form-group label {
-  display: block;
-  margin: 20px 0 10px;
+    display: block;
+    margin: 20px 0 10px;
 }
 
 .form-group textarea {
-  border: 1px solid #aaa;
-  border-radius: 3px;
-  font-size: 16px;
-  padding: 5px;
-  min-width: 500px;
-  max-width: 100%;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    font-size: 16px;
+    padding: 5px;
+    min-width: 500px;
+    max-width: 100%;
 }
 
 .etyma-container {
@@ -266,80 +264,80 @@ h1 button#show {
 
 
 .etyma.active {
-  background-color: #fff;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
 .etyma.active::before,
 .etyma.active::after {
-  content: '\f075';
-  font-family: 'Font Awesome 5 Free';
-  color: #2ecc71;
-  font-size: 7rem;
-  position: absolute;
-  opacity: 0.2;
-  top: 20px;
-  left: 20px;
-  z-index: 0;
+    content: '\f075';
+    font-family: 'Font Awesome 5 Free';
+    color: #2ecc71;
+    font-size: 7rem;
+    position: absolute;
+    opacity: 0.2;
+    top: 20px;
+    left: 20px;
+    z-index: 0;
 }
 .etyma.active::before {
-  color: #3498db;
-  top: -10px;
-  left: -30px;
-  transform: rotateY(180deg);
+    color: #3498db;
+    top: -10px;
+    left: -30px;
+    transform: rotateY(180deg);
 }
 
 
 .etyma-title {
-  margin: 0 35px 0 0;
+    margin: 0 35px 0 0;
 }
 
 .etyma-text {
-  display: none;
-  margin: 30px 0 0;
+    display: none;
+    margin: 30px 0 0;
 }
 
 .etyma.active .etyma-text {
-  display: block;
+    display: block;
 }
 
 .etyma-toggle {
-  background-color: transparent;
-  border: 0;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  padding: 0;
-  position: absolute;
-  top: 30px;
-  right: 30px;
-  height: 30px;
-  width: 30px;
+    background-color: transparent;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    padding: 0;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    height: 30px;
+    width: 30px;
 }
 
 
 .etyma-toggle:focus {
-  outline: 0;
+    outline: 0;
 }
 
 .etyma-toggle .fa-times {
-  display: none;
+    display: none;
 }
 
 .etyma.active .etyma-toggle .fa-times {
-  color: #fff;
-  display: block;
+    color: #fff;
+    display: block;
 }
 
 .etyma.active .etyma-toggle .fa-chevron-down {
-  display: none;
+    display: none;
 }
 
 .etyma.active .etyma-toggle {
-  background-color: #9fa4a8;
+    background-color: #9fa4a8;
 }
 
 #current {
