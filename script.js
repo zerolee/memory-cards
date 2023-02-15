@@ -1,3 +1,6 @@
+/*********************************
+/* DOM 元素获取
+*********************************/
 const cardsContainer = document.getElementById('cards-container');
 const prevBtn = document.getElementById('prev');
 const nextBtn = document.getElementById('next');
@@ -22,7 +25,9 @@ const etyma_edit = document.getElementById('etyma-edit');
 const etyma_delete = document.getElementById('etyma-delete');
 const etyma_marker = document.getElementById('etyma-marker');
 
-
+/*****************************************************************
+** 变量定义
+*****************************************************************/
 // Keep track of current card
 let currentActiveCard = 0;
 
@@ -36,7 +41,12 @@ const cardsElAll = [];
 
 // Store card data
 const cardsData = getCardsData();
+// 存储用来分配的 Id
+const cardsId = getCardsId();
 
+/*****************************************************************
+** 函数定义
+*****************************************************************/
 // Create all cards
 function createCards() {
     cardsData.forEach((data, index) => createCard(data, index));
@@ -76,13 +86,14 @@ function createCard(data, index) {
     // Add to DOM cards
     cardsEl.push(card);
 
-    cardsContainer.appendChild(card);
+    cardsContainer.append(card);
 
     updateCurrentText();
 }
 
 // Delete Card
 etyma_delete.addEventListener('click', () => {
+    cardsId.push(cardsData[currentActiveCard].id);
     cardsContainer.removeChild(cardsEl[currentActiveCard]);
     cardsEl.splice(currentActiveCard, 1);
     cardsData.splice(currentActiveCard, 1);
@@ -94,6 +105,7 @@ etyma_delete.addEventListener('click', () => {
     etymaMarker(cardsData[currentActiveCard]);
     // 存储数据，不刷新页面
     localStorage.setItem('cards', JSON.stringify(cardsData));
+    localStorage.setItem('cardsId', JSON.stringify(cardsId));
 });
 
 
@@ -137,18 +149,28 @@ function specifyCards(first, second) {
 
 // Get cards from local storage
 function getCardsData() {
-    const cards = JSON.parse(localStorage.getItem('cards'));
-    return cards === null ? [] : cards;
+    return JSON.parse(localStorage.getItem('cards')) ?? [];
+}
+
+// Get cardsId from local storage
+function getCardsId() {
+    return JSON.parse(localStorage.getItem('cardsId')) ?? [];
+
 }
 
 // Add card to local storage
 function setCardsData(cards) {
     localStorage.setItem('cards', JSON.stringify(cards));
+    localStorage.setItem('cardsId', JSON.stringify(cardsId));
     window.location.reload();
 }
 
 createCards();
 
+
+/*****************************************************************
+** 事件绑定
+*****************************************************************/
 // Event listeners
 
 // Next button
@@ -235,16 +257,26 @@ function etymaMarker(data) {
 addCardBtn.addEventListener('click', () => {
     const name = etyma_name.value;
     const value = etyma_value.value;
+    let id = 1;
+    if (cardsId.length == 0) {
+	id = cardsData.length + 1;
+	cardsId.push(id+1);
+    } else {
+	id = cardsId.pop();
+	if (cardsId.length == 0) {
+	    cardsId.push(id+1);
+	}
+    }
     if (name.trim() && value.trim()) {
         const newCard = {
-            id:`${cardsData.length+1}`,
+            id:`${id}`,
             name,
             value,
             example:{
                 name: etyma_example_name.value,
                 value:etyma_example_value.value
             },
-            belong:'nil',
+            belong: 'nil',
 	    marker:false
         };
 
@@ -344,8 +376,10 @@ function listCard(data, index) {
     // Add to DOM cards
     cardsElAll.push(card);
 
-    etymaContainer.appendChild(card);
+    etymaContainer.append(card);
 }
 
-
+/***************************************************************
+** 主程序
+****************************************************************/
 listAllCards();
