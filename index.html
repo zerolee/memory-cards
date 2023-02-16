@@ -69,14 +69,15 @@
         <button id="etyma-hide" class="btn btn-small btn-ghost"><i></i>
         </button>
       </div>
-      <form id="etyma-filter">
+      <form name="etyma-filter">
 	<select id="select" name="select">
 	  <option value="ID">ID</option>
 	  <option value="etyma">etyma</option>
 	  <option value="default" selected>default</option>
 	</select>
-        <input id="filter" type="text"/>
-	<button>marker</button>
+	<span> marker </span>
+        <input name="filter" type="text"/>
+	<input type="submit" value="过滤" />
       </form>
     </div>
     <script src="script.js"></script>

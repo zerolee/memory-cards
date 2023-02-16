@@ -1,6 +1,6 @@
 /*********************************
 /* DOM 元素获取
-*********************************/
+ *********************************/
 const cardsContainer = document.getElementById('cards-container');
 const prevBtn = document.getElementById('prev');
 const nextBtn = document.getElementById('next');
@@ -24,10 +24,12 @@ const etyma_radom = document.getElementById('etyma-radom');
 const etyma_edit = document.getElementById('etyma-edit');
 const etyma_delete = document.getElementById('etyma-delete');
 const etyma_marker = document.getElementById('etyma-marker');
+const filterMarker = document.querySelector('[name=etyma-filter]>span');
+const etymaFilter = document.querySelector('[name=etyma-filter]');
 
 /*****************************************************************
-** 变量定义
-*****************************************************************/
+ ** 变量定义
+ *****************************************************************/
 // Keep track of current card
 let currentActiveCard = 0;
 
@@ -45,8 +47,8 @@ const cardsData = getCardsData();
 const cardsId = getCardsId();
 
 /*****************************************************************
-** 函数定义
-*****************************************************************/
+ ** 函数定义
+ *****************************************************************/
 // Create all cards
 function createCards() {
     cardsData.forEach((data, index) => createCard(data, index));
@@ -62,7 +64,7 @@ function createCard(data, index) {
     }
 
     card.innerHTML = `
-    <div class="inner-card">
+    <div class="inner-card" draggable="true">
       <div class="inner-card-front">
         <p>${data.name}</p>
       </div>
@@ -93,19 +95,21 @@ function createCard(data, index) {
 
 // Delete Card
 etyma_delete.addEventListener('click', () => {
-    cardsId.push(cardsData[currentActiveCard].id);
-    cardsContainer.removeChild(cardsEl[currentActiveCard]);
-    cardsEl.splice(currentActiveCard, 1);
-    cardsData.splice(currentActiveCard, 1);
-    if (currentActiveCard > cardsEl.length - 1) {
-	currentActiveCard = cardsEl.length - 1;
+    if (confirm("你确定要删除当前 Card?")) {
+        cardsId.push(cardsData[currentActiveCard].id);
+        cardsContainer.removeChild(cardsEl[currentActiveCard]);
+        cardsEl.splice(currentActiveCard, 1);
+        cardsData.splice(currentActiveCard, 1);
+        if (currentActiveCard > cardsEl.length - 1) {
+            currentActiveCard = cardsEl.length - 1;
+        }
+        cardsEl[currentActiveCard].className = 'card active'
+        updateCurrentText();
+        etymaMarker(cardsData[currentActiveCard]);
+        // 存储数据，不刷新页面
+        localStorage.setItem('cards', JSON.stringify(cardsData));
+        localStorage.setItem('cardsId', JSON.stringify(cardsId));
     }
-    cardsEl[currentActiveCard].className = 'card active'
-    updateCurrentText();
-    etymaMarker(cardsData[currentActiveCard]);
-    // 存储数据，不刷新页面
-    localStorage.setItem('cards', JSON.stringify(cardsData));
-    localStorage.setItem('cardsId', JSON.stringify(cardsId));
 });
 
 
@@ -134,16 +138,16 @@ form_submit.addEventListener('submit', e => {
 
 function specifyCards(first, second) {
     if (first >= 0 && first < cardsEl.length && second == cardsEl.length) {
-	if (first < currentActiveCard) {
-	    cardsEl[currentActiveCard].className = 'card right';
-	} else if (first > currentActiveCard){
-	    cardsEl[currentActiveCard].className = 'card left';
-	}
+        if (first < currentActiveCard) {
+            cardsEl[currentActiveCard].className = 'card right';
+        } else if (first > currentActiveCard){
+            cardsEl[currentActiveCard].className = 'card left';
+        }
 
-	currentActiveCard = first;
-	cardsEl[currentActiveCard].className = 'card active';
-	updateCurrentText();
-	etymaMarker(cardsData[currentActiveCard]);
+        currentActiveCard = first;
+        cardsEl[currentActiveCard].className = 'card active';
+        updateCurrentText();
+        etymaMarker(cardsData[currentActiveCard]);
     }
 }
 
@@ -170,8 +174,8 @@ createCards();
 
 
 /*****************************************************************
-** 事件绑定
-*****************************************************************/
+ ** 事件绑定
+ *****************************************************************/
 // Event listeners
 
 // Next button
@@ -210,7 +214,7 @@ prevBtn.addEventListener('click', () => {
 etyma_radom.addEventListener('click', () => {
     let first;
     do {
-	first = Math.floor(Math.random()*cardsEl.length);
+        first = Math.floor(Math.random()*cardsEl.length);
     } while(cardsData[first].marker);
     specifyCards(first, cardsEl.length);
 });
@@ -232,20 +236,24 @@ hideBtn.addEventListener('click', () => {
 etyma_marker.addEventListener('click', () => {
     let data = cardsData[currentActiveCard];
     if (typeof(data.marker) != "undefined" && data.marker) {
-	etyma_marker.classList.remove('btn-marker');
-	data.marker = false;
+        etyma_marker.classList.remove('btn-marker');
+        data.marker = false;
     } else {
-	etyma_marker.classList.add('btn-marker');
-	data.marker = true;
+        etyma_marker.classList.add('btn-marker');
+        data.marker = true;
     }
+});
+
+filterMarker.addEventListener('click', () => {
+    filterMarker.classList.toggle('btn-marker');
 });
 
 // 收藏了才加颜色，否则是纯白色
 function etymaMarker(data) {
     if (typeof(data.marker) != "undefined" && data.marker) {
-	etyma_marker.classList.add('btn-marker');
+        etyma_marker.classList.add('btn-marker');
     } else {
-	etyma_marker.classList.remove('btn-marker');
+        etyma_marker.classList.remove('btn-marker');
     }
 }
 
@@ -261,13 +269,13 @@ addCardBtn.addEventListener('click', () => {
     const value = etyma_value.value;
     let id = 1;
     if (cardsId.length == 0) {
-	id = cardsData.length + 1;
-	cardsId.push(id+1);
+        id = cardsData.length + 1;
+        cardsId.push(id+1);
     } else {
-	id = cardsId.pop();
-	if (cardsId.length == 0) {
-	    cardsId.push(id+1);
-	}
+        id = cardsId.pop();
+        if (cardsId.length == 0) {
+            cardsId.push(id+1);
+        }
     }
     if (name.trim() && value.trim()) {
         const newCard = {
@@ -279,28 +287,28 @@ addCardBtn.addEventListener('click', () => {
                 value:etyma_example_value.value
             },
             belong: 'nil',
-	    marker:false
+            marker:false
         };
 
         etyma_name.value = '';
         etyma_value.value = '';
-	etyma_example_name.value = '';
-	etyma_example_value.value = '';
+        etyma_example_name.value = '';
+        etyma_example_value.value = '';
 
         addContainer.classList.remove('show');
-	if (New) {
-	    // 查找第一个位于 cardsData[ id -1 ] 之前 id 小于 id-1 的
-	    let insertIndex = id - 1;
-	    if (insertIndex > cardsData.length) {
-		insertIndex = cardsData.length;
-	    }
-	    while(cardsData[insertIndex-1].id > id) {
-		insertIndex--;
-	    }
-	    cardsData.splice(insertIndex, 0, newCard);
-	} else {
-	    cardsData.splice(currentActiveCard, 1, newCard);
-	}
+        if (New) {
+            // 查找第一个位于 cardsData[ id -1 ] 之前 id 小于 id-1 的
+            let insertIndex = id - 1;
+            if (insertIndex > cardsData.length) {
+                insertIndex = cardsData.length;
+            }
+            while(cardsData[insertIndex-1].id > id) {
+                insertIndex--;
+            }
+            cardsData.splice(insertIndex, 0, newCard);
+        } else {
+            cardsData.splice(currentActiveCard, 1, newCard);
+        }
         setCardsData(cardsData);
     }
 });
@@ -310,6 +318,15 @@ document.querySelector('div>span').addEventListener('click', () => {
     document.querySelector('div>span>input').click();
 });
 
+//
+etymaFilter.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let elements = document.forms["etyma-filter"].elements;
+    let select = elements.select.value;
+    let filter = elements.filter.value;
+    let marker = filterMarker.classList.contains('btn-marker');
+    alert('select: ' + select + ', filter: ' + filter + ', marker: ' + marker);
+});
 
 // Import other card
 function getExtraCardsData(input) {
@@ -331,9 +348,11 @@ function getExtraCardsData(input) {
 
 // Clear cards button
 clearBtn.addEventListener('click', () => {
-    localStorage.clear();
-    cardsContainer.innerHTML = '';
-    window.location.reload();
+    if (confirm("你确定要清空所有数据?")) {
+        localStorage.clear();
+        cardsContainer.innerHTML = '';
+        window.location.reload();
+    }
 });
 
 // Export cards button
@@ -363,7 +382,7 @@ function listAllCards() {
     etyma_toggles.forEach(toggle =>
         toggle.addEventListener('click', () => toggle.parentNode.classList.toggle('active')));
     foldCards.addEventListener('click', () => {
-	etyma_toggles.forEach(toggle => toggle.parentNode.classList.toggle('active'));
+        etyma_toggles.forEach(toggle => toggle.parentNode.classList.toggle('active'));
     });
 }
 
@@ -395,6 +414,6 @@ function listCard(data, index) {
 }
 
 /***************************************************************
-** 主程序
-****************************************************************/
+ ** 主程序
+ ****************************************************************/
 listAllCards();
