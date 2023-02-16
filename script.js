@@ -325,7 +325,12 @@ etymaFilter.addEventListener('submit', (e) => {
     let select = elements.select.value;
     let filter = elements.filter.value;
     let marker = filterMarker.classList.contains('btn-marker');
-    alert('select: ' + select + ', filter: ' + filter + ', marker: ' + marker);
+
+    for (let card of cardsElAll) {
+        etymaContainer.removeChild(card);
+    }
+    cardsElAll.length = 0;
+    listAllCards(select, filter, marker);
 });
 
 // Import other card
@@ -376,8 +381,30 @@ listCards.addEventListener('click', () => etymaContainer.classList.add('show'));
 hideCards.addEventListener('click', () => etymaContainer.classList.remove('show'));
 
 // List All Cards
-function listAllCards() {
-    cardsData.forEach((data, index) => listCard(data, index));
+function listAllCards(select, filter, marker) {
+    let filterData;
+
+    if (select) {
+        filterData = cardsData.filter((item) => {
+            let result;
+            if (select == 'etyma') {
+                result = item.name.indexOf(filter) != -1;
+            } else if (select == 'ID'){
+                let ids = filter.split('-');
+                if (ids.length == 1) {
+                    result = (item.id == ids[0]);
+                } else {
+                    result = parseInt(item.id) >= parseInt(ids[0]) && parseInt(item.id) <= parseInt(ids[1]);
+                }
+            } else {
+                result = true;
+            }
+            return ((item.marker??false)==marker) && result;
+        });
+    } else {
+        filterData = cardsData;
+    }
+    filterData.forEach((data) => listCard(data));
     const etyma_toggles = document.querySelectorAll('.etyma-toggle');
     etyma_toggles.forEach(toggle =>
         toggle.addEventListener('click', () => toggle.parentNode.classList.toggle('active')));
@@ -387,14 +414,9 @@ function listAllCards() {
 }
 
 // List a single card in DOM
-function listCard(data, index) {
+function listCard(data) {
     const card = document.createElement('div');
     card.classList.add('etyma');
-
-    if (index === 0) {
-        card.classList.add('active');
-    }
-
     card.innerHTML = `
     <h3 class="etyma-title">${data.id}.&nbsp;${data.name}</h3>
     <p class="etyma-text">
