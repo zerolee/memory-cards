@@ -24,7 +24,6 @@ const etyma_radom = document.getElementById('etyma-radom');
 const etyma_edit = document.getElementById('etyma-edit');
 const etyma_delete = document.getElementById('etyma-delete');
 const etyma_marker = document.getElementById('etyma-marker');
-const filterMarker = document.querySelector('[name=etyma-filter]>span');
 const etymaFilter = document.querySelector('[name=etyma-filter]');
 
 /*****************************************************************
@@ -244,10 +243,6 @@ etyma_marker.addEventListener('click', () => {
     }
 });
 
-filterMarker.addEventListener('click', () => {
-    filterMarker.classList.toggle('btn-marker');
-});
-
 // 收藏了才加颜色，否则是纯白色
 function etymaMarker(data) {
     if (typeof(data.marker) != "undefined" && data.marker) {
@@ -323,13 +318,13 @@ etymaFilter.addEventListener('submit', (e) => {
     e.preventDefault();
     let elements = document.forms["etyma-filter"].elements;
     let filter = elements.filter.value;
-    let marker = filterMarker.classList.contains('btn-marker');
+    let select = elements.select.value;
 
     for (let card of cardsElAll) {
         etymaContainer.removeChild(card);
     }
     cardsElAll.length = 0;
-    listAllCards(filter, marker);
+    listAllCards(filter, select);
 });
 
 // Import other card
@@ -380,23 +375,29 @@ listCards.addEventListener('click', () => etymaContainer.classList.add('show'));
 hideCards.addEventListener('click', () => etymaContainer.classList.remove('show'));
 
 // List All Cards
-function listAllCards(filter, marker) {
+function listAllCards(filter, select) {
     let filterData;
 
-    if (filter) {
+    if (select) {
         let ids = filter.split('-');
         filterData = cardsData.filter((item) => {
             let result;
-            if (isNaN(ids[0])) {
+            if (isNaN(parseInt(ids[0]))) {
                 result = item.name.indexOf(ids[0]) != -1;
             } else {
                 if (ids.length == 1) {
                     result = (item.id == ids[0]);
                 } else {
-                    result = parseInt(item.id) >= parseInt(ids[0]) && parseInt(item.id) <= parseInt(ids[1]);
+                    result = parseInt(item.id) >= parseInt(ids[0]) &&
+                        parseInt(item.id) <= parseInt(ids[1]);
                 }
             }
-            return ((item.marker??false)==marker) && result;
+	    if (select == 'mark') {
+		result = (item.marker??false) && result;
+	    } else if (select == 'unmark') {
+		result = !(item.marker??false) && result;
+	    }
+            return result;
         });
     } else {
         filterData = cardsData;
