@@ -1,68 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="style.css" />
     <title>Memory Cards</title>
   </head>
   <body>
-    <button id="clear" class="clear btn">
-      <i class="fas fa-trash"></i> Clear Cards
-    </button>
-
-    <button id="export" class="export btn">
-      <i class="fas fa-export"></i> Export Cards
-    </button>
-
-    <button id="list" class="list btn">
-      <i class="fa-list"></i> List All Cards
-    </button>
-    <h1>
-      <span class="btn btn-small btn-input-file">
-	<i class="fa-plus"></i> 导入外部数据
-	<input type="file" class="input-file" onchange="getExtraCardsData(this)" />
+    <div class="cards-title">
+      <span class="btn btn-small">
+        导入外部数据
+        <input type="file" hidden onchange="getExtraCardsData(this)" />
       </span>
-      Memory Cards
-      <button id="show" class="btn btn-small">
-        <i class="fas fa-plus"></i> Add New Card
-      </button>
-    </h1>
-    <div id="cards-container" class="cards">
+      <h1>Memory Cards</h1>
+      <button id="show" class="btn btn-small">Add New Card</button>
+    </div>
+    <div id="cards-container">
       <!-- 卡片放置区 -->
     </div>
     <div class="navigation">
-      <button id="etyma-edit" class="btn-small btn-etyma">
-	<i class="fa-edit"></i>Edit
-      </button>
-      <button id="etyma-delete" class="btn-small btn-etyma">
-	<i class="fa-delete"></i>Delete
-      </button>
-      <button id="prev" class="nav-button">
-        <i class="fas fa-arrow-left"></i>
-      </button>
+      <button id="etyma-edit" class="btn-small"> Edit </button>
+      <button id="etyma-delete" class="btn-small"> Delete </button>
+      <button id="prev"><i></i></button>
       <form id="etyma-form">
-	<input id="current" type="text" autocomplete="off" maxlength="9"/>
+        <input id="current" type="text" autocomplete="off" maxlength="9"/>
       </form>
-      <button id="next" class="nav-button">
-        <i class="fas fa-arrow-right"></i>
-      </button>
-      <button id="etyma-radom" class="nav-button">
-	<i class="fa-radom"></i>
-      </button>
-      <button id="etyma-marker" class="btn-small btn-etyma">
-	<i class="fa-marker"></i>Marker
-      </button>
+      <button id="next"> <i></i> </button>
+      <button id="etyma-radom"> <i></i> </button>
+      <button id="etyma-marker" class="btn-small"> Marker </button>
     </div>
+    <div class="cards-bottom">
+      <button id="clear" class="btn"> Clear Cards </button>
+      <button id="export" class="btn"> Export Cards </button>
+      <button id="list" class="btn"> List All Cards </button>
+    </div>
+
     <!-- 添加新的词根 -->
     <div id="add-container" class="add-container">
-      <h1>
-	Add New Card
-        <button id="hide" class="btn btn-small btn-ghost">
-          <i class="fas fa-minus"></i>
-        </button>
-      </h1>
+      <div class="cards-title">
+        <h1> Add New Card </h1>
+        <button id="hide" class="btn btn-small btn-ghost"> <i></i> </button>
+      </div>
+
       <div class="form-group">
         <label for="etyma-name">词根</label>
         <textarea id="etyma-name" placeholder="输入词根..."></textarea>
@@ -79,23 +58,26 @@
         <label for="etyma-example-value">示例释义</label>
         <textarea id="etyma-example-value" placeholder="词根用例释义..."></textarea>
       </div>
-
-      <button id="add-card" class="btn">
-        <i class="fas fa-plus"></i> 提交
-      </button>
+      <button id="add-card" class="btn">提交</button>
     </div>
 
     <!-- 显示全部的卡片（词根） -->
     <div id="etyma-container" class="etyma-container">
-      <h1>
-	<button id="fold" class="fold btn">
-	  <i class="fa-fold"></i> 折叠/打开全部
-	</button>
-	全部的词根
-	<button id="etyma-hide" class="btn btn-small btn-ghost">
-	  <i class="fa-minus"></i>
-	</button>
-      </h1>
+      <div class="cards-title">
+        <button id="fold" class="btn"> 折叠/打开全部 </button>
+        <h1> 全部的词根 </h1>
+        <button id="etyma-hide" class="btn btn-small btn-ghost"><i></i>
+        </button>
+      </div>
+      <form id="etyma-filter">
+	<select id="select" name="select">
+	  <option value="ID">ID</option>
+	  <option value="etyma">etyma</option>
+	  <option value="default" selected>default</option>
+	</select>
+        <input id="filter" type="text"/>
+	<button>marker</button>
+      </form>
     </div>
     <script src="script.js"></script>
   </body>

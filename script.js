@@ -117,7 +117,7 @@ etyma_edit.addEventListener('click', () => {
     etyma_example_name.value = cardsData[currentActiveCard].example.name;
     etyma_example_value.value = cardsData[currentActiveCard].example.value;
     New = false;
-    document.querySelector('div#add-container>h1').firstChild.replaceWith('Edit Cards');
+    document.querySelector('#add-container>div>h1').firstChild.replaceWith('Edit Cards');
 });
 
 
@@ -225,7 +225,7 @@ hideBtn.addEventListener('click', () => {
     etyma_value.value = '';
     etyma_example_name.value = '';
     etyma_example_value.value = '';
-    document.querySelector('div#add-container>h1').firstChild.replaceWith('Add New Card');
+    document.querySelector('#add-container>div>h1').firstChild.replaceWith('Add New Card');
 });
 
 // Marker
@@ -303,6 +303,11 @@ addCardBtn.addEventListener('click', () => {
 	}
         setCardsData(cardsData);
     }
+});
+
+// 点击导入外部数据按钮会自动模拟成点击 input 按钮
+document.querySelector('div>span').addEventListener('click', () => {
+    document.querySelector('div>span>input').click();
 });
 
 

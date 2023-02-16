@@ -8,24 +8,23 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
     margin: 0;
-    overflow: hidden;
-    font-family: 'Lato', sans-serif;
 }
 
-h1 {
-    position: relative;
+.cards-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-h1 button#show {
-    position: absolute;
-    right: 0;
-    transform: translate(120%, -50%);
-    z-index: 2;
+.cards-title .btn{
+    margin-top: 0;
 }
 
-
+.cards-title h1 {
+    margin-left: 10px;
+    margin-right: 10px;
+}
 
 .btn {
     cursor: pointer;
@@ -41,58 +40,15 @@ h1 button#show {
     font-size: 12px;
     padding: 5px 10px;
 }
-
-.input-file {
-    position: absolute;
-    overflow: hidden;
-    right: 0;
-    top: 0;
-    opacity: 0;
-    cursor: pointer;
-}
-
-
-.btn-input-file {
-    position: absolute;
-    left: 0;
-    transform: translate(-130%, -50%);
-    z-index: 2;
-}
-
 .btn-ghost {
     border: 0;
     background-color: transparent;
 }
-
-.clear {
-    position: absolute;
-    bottom: 30px;
-    left: 30px;
-}
-
-.export {
-    position: absolute;
-    bottom: 30px;
-    left: 150px;
-}
-
-.list {
-    position: absolute;
-    bottom: 30px;
-    right: 30px;
-}
-
-.fold {
-    position: absolute;
-    top: -15px;
-    left: 0;
-}
-
-.cards {
+#cards-container {
     perspective: 1000px;
     position: relative;
     height: 300px;
-    width: 500px;
+    width: 400px;
     max-width: 100%;
 }
 
@@ -173,17 +129,43 @@ h1 button#show {
     margin: 20px 0;
 }
 
-.navigation .nav-button {
+.navigation .btn-marker {
+    background-color: #9fa4a8;
+}
+
+#prev>i::before{content:"⬅️"}
+#next>i::before{content:"➡️"}
+#etyma-radom>i:before{content:"🔄"}
+
+#prev, #next, #etyma-radom{
     border: none;
     background-color: transparent;
     cursor: pointer;
     font-size: 16px;
 }
 
+#current {
+    width: 70px;
+    text-align: center;
+    font-size: 15px;
+    border: none;
+}
+
 .navigation .btn-small {
     background-color: transparent;
     margin: 0 5px;
     cursor: pointer;
+}
+
+.cards-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cards-bottom button {
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .add-container {
@@ -208,9 +190,8 @@ h1 button#show {
     z-index: 2;
 }
 
-.add-container h3 {
-    margin: 10px 0;
-}
+#hide>i::before{content:"✖️"}
+
 
 .form-group label {
     display: block;
@@ -222,7 +203,7 @@ h1 button#show {
     border-radius: 3px;
     font-size: 16px;
     padding: 5px;
-    min-width: 500px;
+    width: 400px;
     max-width: 100%;
 }
 
@@ -240,14 +221,16 @@ h1 button#show {
     transition: 0.3s ease;
 }
 
+#etyma-hide>i::before{content:"✖️"}
 .etyma-container.show {
     opacity: 1;
     z-index: 2;
 }
 
-.etyma-container h1 {
-    margin: 0 auto;
-    text-align: center;
+#etyma-filter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .etyma {
@@ -256,7 +239,7 @@ h1 button#show {
     border-radius: 10px;
     margin: 5px auto;
     padding: 30px;
-    width: 500px;
+    width: 90%;
     position: relative;
     overflow: hidden;
     transition: 0.3s ease;
@@ -285,11 +268,6 @@ h1 button#show {
     top: -10px;
     left: -30px;
     transform: rotateY(180deg);
-}
-
-
-.etyma-title {
-    margin: 0 35px 0 0;
 }
 
 .etyma-text {
@@ -340,25 +318,5 @@ h1 button#show {
     background-color: #9fa4a8;
 }
 
-#current {
-    width: 70px;
-    text-align: center;
-    font-size: 15px;
-    border: none;
-}
-
-.navigation .btn-marker {
-    background-color: #9fa4a8;
-}
-
-.fa-arrow-left:before{content:"⬅️"}
-.fa-arrow-right:before{content:"➡️"}
-.fa-plus:before{content:"➕"}
-.fa-minus:before{content:"✖️"}
 .fa-times:before{content:"✖️"}
-.fa-trash:before{content:"🚮"}
-.fa-export:before{content:"🏧"}
 .fa-chevron-down:before{content:"⬇️"}
-.fa-list:before{content:"🛂"}
-.fa-fold:before{content:"🛃"}
-.fa-radom:before{content:"🔄"}
