@@ -322,7 +322,6 @@ document.querySelector('div>span').addEventListener('click', () => {
 etymaFilter.addEventListener('submit', (e) => {
     e.preventDefault();
     let elements = document.forms["etyma-filter"].elements;
-    let select = elements.select.value;
     let filter = elements.filter.value;
     let marker = filterMarker.classList.contains('btn-marker');
 
@@ -330,7 +329,7 @@ etymaFilter.addEventListener('submit', (e) => {
         etymaContainer.removeChild(card);
     }
     cardsElAll.length = 0;
-    listAllCards(select, filter, marker);
+    listAllCards(filter, marker);
 });
 
 // Import other card
@@ -381,23 +380,21 @@ listCards.addEventListener('click', () => etymaContainer.classList.add('show'));
 hideCards.addEventListener('click', () => etymaContainer.classList.remove('show'));
 
 // List All Cards
-function listAllCards(select, filter, marker) {
+function listAllCards(filter, marker) {
     let filterData;
 
-    if (select) {
+    if (filter) {
+        let ids = filter.split('-');
         filterData = cardsData.filter((item) => {
             let result;
-            if (select == 'etyma') {
-                result = item.name.indexOf(filter) != -1;
-            } else if (select == 'ID'){
-                let ids = filter.split('-');
+            if (isNaN(ids[0])) {
+                result = item.name.indexOf(ids[0]) != -1;
+            } else {
                 if (ids.length == 1) {
                     result = (item.id == ids[0]);
                 } else {
                     result = parseInt(item.id) >= parseInt(ids[0]) && parseInt(item.id) <= parseInt(ids[1]);
                 }
-            } else {
-                result = true;
             }
             return ((item.marker??false)==marker) && result;
         });
