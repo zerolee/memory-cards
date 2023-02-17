@@ -63,7 +63,7 @@ function createCard(data, index) {
     }
 
     card.innerHTML = `
-    <div class="inner-card" draggable="true">
+    <div class="inner-card">
       <div class="inner-card-front">
         <p>${data.name}</p>
       </div>
@@ -81,7 +81,62 @@ function createCard(data, index) {
     </div>
   `;
 
-    card.addEventListener('click', () => card.classList.toggle('show-answer'));
+    // card.addEventListener('click', () => card.classList.toggle('show-answer'));
+
+    card.onpointerdown = function (event) {
+        // 保存鼠标按下去的一霎那，指针的位置
+        let shiftX = event.pageX;
+
+        // 1. 准备移动：确保 absolute, 并通过设置 z-index 以确保 card
+        card.style.position = 'absolute';
+        card.style.zIndex = 10;
+
+        // 将其从父元素直接移动到 body 中
+        // 以使其定位是相对于 body 的
+        // document.body.append(card);
+
+        // 现在球的中心在 (pageX, pageY) 坐标上
+        function moveAt(pageX) {
+            let left = pageX - shiftX;
+            if (left > card.offsetWidth) {
+                card.style.left = card.offsetWidth;
+            } else if (left < -card.offsetWidth){
+                card.style.left = -card.offsetWidth;
+            } else {
+                card.style.left = left + 'px';
+            }
+        }
+
+        moveAt(event.pageX);
+
+        function onPointerMove(event) {
+            moveAt(event.pageX);
+        }
+
+        // 2. 在 mousemove 事件上移动 card
+        document.addEventListener('pointermove', onPointerMove);
+
+        // 3. 放下 card，并移除不需要的处理程序
+        card.onpointerup = function (event) {
+            if (event.pageX == shiftX) {
+                card.classList.toggle('show-answer');
+            }
+            card.style.left = 0;
+            document.removeEventListener('pointermove', onPointerMove);
+            card.onpointerup = null;
+        }
+
+        card.onpointerleave = function () {
+            card.style.left = 0;
+            document.removeEventListener('pointermove', onPointerMove);
+            card.onpointerup = null;
+        }
+    }
+
+    card.ondragstart = function () {
+        return false;
+    }
+
     etymaMarker(data);
 
     // Add to DOM cards
@@ -392,11 +447,11 @@ function listAllCards(filter, select) {
                         parseInt(item.id) <= parseInt(ids[1]);
                 }
             }
-	    if (select == 'mark') {
-		result = (item.marker??false) && result;
-	    } else if (select == 'unmark') {
-		result = !(item.marker??false) && result;
-	    }
+            if (select == 'mark') {
+                result = (item.marker??false) && result;
+            } else if (select == 'unmark') {
+                result = !(item.marker??false) && result;
+            }
             return result;
         });
     } else {
