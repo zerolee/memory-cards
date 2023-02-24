@@ -50,16 +50,17 @@ body {
     height: 300px;
     width: 400px;
     max-width: 100%;
+    overflow: hidden;
 }
 
 .card {
     position: absolute;
     opacity: 0;
     font-size: 1.5em;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
+    top: 7px;
+    left: 7px;
+    height: 96%;
+    width: 96%;
     transform: translateX(50%) rotateY(-10deg);
     transition: transform 0.4s ease, opacity 0.4s ease;
 }

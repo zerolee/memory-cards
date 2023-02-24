@@ -81,16 +81,14 @@ function createCard(data, index) {
     </div>
   `;
 
-    // card.addEventListener('click', () => card.classList.toggle('show-answer'));
-
     card.onpointerdown = function (event) {
         // 保存鼠标按下去的一霎那，指针的位置
         let shiftX = event.pageX;
+        let cursor = card.style.cursor;
 
         // 1. 准备移动：确保 absolute, 并通过设置 z-index 以确保 card
         card.style.position = 'absolute';
-        card.style.zIndex = 10;
-
+        card.style.zIndex = 1000;
         // 将其从父元素直接移动到 body 中
         // 以使其定位是相对于 body 的
         // document.body.append(card);
@@ -99,17 +97,18 @@ function createCard(data, index) {
         function moveAt(pageX) {
             let left = pageX - shiftX;
             if (left > card.offsetWidth) {
-                card.style.left = card.offsetWidth;
+                card.style.left = card.offsetWidth + 'px';
             } else if (left < -card.offsetWidth){
-                card.style.left = -card.offsetWidth;
+                card.style.left = -card.offsetWidth + 'px';
             } else {
-                card.style.left = left + 'px';
+                card.style.left = left + 7 + 'px';
             }
         }
 
-        moveAt(event.pageX);
+        // moveAt(event.pageX);
 
         function onPointerMove(event) {
+            card.style.cursor = 'move';
             moveAt(event.pageX);
         }
 
@@ -121,15 +120,34 @@ function createCard(data, index) {
             if (event.pageX == shiftX) {
                 card.classList.toggle('show-answer');
             }
-            card.style.left = 0;
+            if (event.pageX - shiftX > card.offsetWidth/4) {
+                if (currentActiveCard == 0) {
+                    card.style.left = '7px';
+                } else {
+                    prevBtn.click();
+                }
+            } else if (event.pageX - shiftX < -card.offsetWidth/4){
+                if (currentActiveCard == cardsEl.length -1) {
+                    card.style.left = '7px';
+                } else {
+                    nextBtn.click();
+                }
+            } else {
+                card.style.left = '7px';
+            }
             document.removeEventListener('pointermove', onPointerMove);
             card.onpointerup = null;
+            card.style.position = '';
+            card.style.cursor = cursor;
+	    // alert('什么鬼？向');
         }
 
         card.onpointerleave = function () {
-            card.style.left = 0;
+            card.style.left = '7px';
             document.removeEventListener('pointermove', onPointerMove);
             card.onpointerup = null;
+            card.style.position = '';
+            card.style.cursor = cursor;
         }
     }
 
