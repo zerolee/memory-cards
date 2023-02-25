@@ -139,7 +139,6 @@ function createCard(data, index) {
             card.onpointerup = null;
             card.style.position = '';
             card.style.cursor = cursor;
-	    // alert('什么鬼？向');
         }
 
         card.onpointerleave = function () {
@@ -193,7 +192,7 @@ etyma_edit.addEventListener('click', () => {
     etyma_example_name.value = cardsData[currentActiveCard].example.name;
     etyma_example_value.value = cardsData[currentActiveCard].example.value;
     New = false;
-    document.querySelector('#add-container>div>h1').firstChild.replaceWith('Edit Cards');
+    document.querySelector('#add-container>div>h2').firstChild.replaceWith('Edit Cards');
 });
 
 
@@ -301,7 +300,7 @@ hideBtn.addEventListener('click', () => {
     etyma_value.value = '';
     etyma_example_name.value = '';
     etyma_example_value.value = '';
-    document.querySelector('#add-container>div>h1').firstChild.replaceWith('Add New Card');
+    document.querySelector('#add-container>div>h2').firstChild.replaceWith('Add New Card');
 });
 
 // Marker
@@ -314,6 +313,8 @@ etyma_marker.addEventListener('click', () => {
         etyma_marker.classList.add('btn-marker');
         data.marker = true;
     }
+    // 存储数据，不刷新页面
+    localStorage.setItem('cards', JSON.stringify(cardsData));
 });
 
 // 收藏了才加颜色，否则是纯白色
@@ -336,15 +337,18 @@ addCardBtn.addEventListener('click', () => {
     const name = etyma_name.value;
     const value = etyma_value.value;
     let id = 1;
-    if (cardsId.length == 0) {
-        id = cardsData.length + 1;
-        cardsId.push(id+1);
+    if (!New) {
+        id = cardsData[currentActiveCard].id;
     } else {
-        id = cardsId.pop();
         if (cardsId.length == 0) {
+            id = cardsData.length + 1;
             cardsId.push(id+1);
-        }
-    }
+        } else {
+            id = cardsId.pop();
+            if (cardsId.length == 0) {
+                cardsId.push(id+1);
+            }
+        }}
     if (name.trim() && value.trim()) {
         const newCard = {
             id:`${id}`,
@@ -510,3 +514,6 @@ function listCard(data) {
  ** 主程序
  ****************************************************************/
 listAllCards();
+if (typeof(cardsData[0].marker) != "undefined" && (cardsData[0].marker)) {
+    etyma_marker.classList.add('btn-marker');
+}
