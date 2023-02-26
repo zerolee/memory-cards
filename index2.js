@@ -257,6 +257,18 @@ function specifyCards(cardNum, cardCount) {
 
 
 // 收藏了才加颜色，否则是纯白色
+function markerCard(index) {
+    let data = cardsData[index];
+    if (typeof(data.marker) != "undefined" && data.marker) {
+        data.marker = false;
+    } else {
+        data.marker = true;
+    }
+    // 存储数据，不刷新页面
+    localStorage.setItem('cards', JSON.stringify(cardsData));
+}
+
+
 function etymaMarker(data) {
     if (typeof(data.marker) != "undefined" && data.marker) {
         markerBtn.classList.add('btn-marker');
@@ -268,16 +280,18 @@ function etymaMarker(data) {
 // List a single card in DOM
 function listCard(data) {
     const card = document.createElement('div');
+    const classMarker = (typeof(data.marker) != "undefined" && data.marker) ? 'class="btn-marker"' : '';
     card.classList.add('etyma');
     card.innerHTML = `
-    <h3 class="etyma-title">${data.id}.&nbsp;${data.name}</h3>
+    <h3 class="etyma-title">${data.id}.&nbsp;${data.name} </h3>
+    <span ${classMarker}>标记</span>
     <p class="etyma-text">
     ${data.name}:&nbsp;${data.value}<br />
     ${data.example.name}:&nbsp;${data.example.value}
     </p>
     <button class="etyma-toggle">
-    <i class="fa-chevron-down"></i>
-    <i class="fa-times"></i>
+    <i>⬇️</i>
+    <i>✖️</i>
     </button>
     `;
 
@@ -316,11 +330,18 @@ function listAllCards(filter, select) {
         filterData = cardsData;
     }
     filterData.forEach((data) => listCard(data));
-    const etyma_toggles = document.querySelectorAll('.etyma-toggle');
-    etyma_toggles.forEach(toggle =>
+    const cardsToggle = document.querySelectorAll('.etyma-toggle');
+    const cardsMarker = document.querySelectorAll('.etyma>span');
+    cardsToggle.forEach(toggle =>
         toggle.addEventListener('click', () => toggle.parentNode.classList.toggle('active')));
+    cardsMarker.forEach(marker =>
+        marker.addEventListener('click', () => {
+            marker.classList.toggle('btn-marker');
+            const index = marker.parentNode.firstElementChild.textContent.split('.')[0];
+            markerCard(index - 1);
+        }));
     foldCards.addEventListener('click', () => {
-        etyma_toggles.forEach(toggle => toggle.parentNode.classList.toggle('active'));
+        cardsToggle.forEach(toggle => toggle.parentNode.classList.toggle('active'));
     });
 }
 
@@ -453,18 +474,9 @@ editBtn.addEventListener('click', () => {
 
 // Marker
 markerBtn.addEventListener('click', () => {
-    let data = cardsData[currentActiveCard];
-    if (typeof(data.marker) != "undefined" && data.marker) {
-        markerBtn.classList.remove('btn-marker');
-        data.marker = false;
-    } else {
-        markerBtn.classList.add('btn-marker');
-        data.marker = true;
-    }
-    // 存储数据，不刷新页面
-    localStorage.setItem('cards', JSON.stringify(cardsData));
+    markerBtn.classList.toggle('btn-marker');
+    markerCard(currentActiveCard);
 });
-
 
 ////////////////////////////////////////////////////////////////
 // Card 的导航：向前、向后、指定跳转、随机跳转
