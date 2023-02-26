@@ -1,0 +1,445 @@
+body {
+    font-family: helvetica, arial, sans-serif;
+    background: #efefef;
+    margin: 0px;
+}
+
+#wrapper {
+    width: 400px;
+    margin: 0 auto 20px;
+    position: relative;
+}
+
+header {
+    position: relative;
+    height: 50px;
+    margin: 10px 0;
+    background: #fff;
+    border-radius: 20px 0px 20px 0px;
+    box-shadow: 0 12px 8px -9px #555;
+    padding: 1px;
+}
+
+#cards-main span {
+    position: absolute;
+    font-family:"Source Sans Pro", helvetica, sans-serif;
+    width: 50px;
+    padding:.25em .3em;
+    font-weight:600;
+    text-align: center;
+    height: 30px;
+    top: 15px;
+}
+#cards-main header span:first-child {
+    border-top-left-radius:10px;
+    left: 10px;background:#4eb8ea;}
+#cards-main header span:nth-child(3) {
+    border-bottom-right-radius:10px;
+    right: 10px;background:#f88c21;}
+
+#cards-main span:hover {
+    color: #555;
+    border-color: #fff;
+    border: 0;
+    cursor: pointer;
+    opacity:1; visibility:visible; /*两个属性都会产生过渡动画*/
+}
+header h2 {
+    padding: 0;
+    font-family: 'Lato', helvetica, sans-serif;
+    font-weight: 900;
+    font-size: 1.5em;
+    line-height: 1;
+    color: #4eb8ea;
+    text-align: center;
+    margin: 15px auto;
+}
+
+#cards-main article {
+    margin: 16px 0 0;
+    padding: 0 0 10px;
+}
+
+#cards-main nav {
+    position: relative;
+    height: 50px;
+    margin: 10px 0;
+    background: #fff;
+    border-radius: 20px 0px 20px 0px;
+    box-shadow: 0 12px 8px -9px #555;
+    padding: 1px;
+}
+
+#cards-main nav span:first-child {
+    border-top-left-radius:10px;
+    left: 0;background:#d6e636;}
+#cards-main nav span:nth-child(2) {
+    border-bottom-right-radius:10px;
+    left: 60px;background:#ee4c98;}
+#cards-main nav span:nth-child(7) {
+    border-bottom-right-radius:10px;
+    border: 2px solid;
+    top: 12px;
+    right: 13px;}
+
+#cards-main nav span:nth-child(7).btn-marker {
+    color: red;
+    background-color: #9fa4a8;}
+
+#cards-main nav form {
+    margin: 15px auto;
+    padding: 0 100px;
+    width: 100px;
+}
+
+#cards-main nav form input {
+    width: 70px;
+    text-align: center;
+    font-size: 15px;
+}
+
+#cards-main nav i {
+    position: absolute;
+    display: block;
+    top: 18px;
+}
+
+#cards-main nav i:nth-child(3) {left: 125px;}
+#cards-main nav i:nth-child(5) {right: 145px;}
+#cards-main nav i:nth-child(6) {right: 115px;}
+
+i:hover {
+    border: 0;
+    cursor: pointer;
+}
+
+#cards-main aside {
+    position: relative;
+    height: 50px;
+    margin: 10px 0;
+    background: #fff;
+    border-radius: 20px 0px 20px 0px;
+    box-shadow: 0 12px 8px -9px #555;
+    padding: 1px;
+}
+
+#cards-main aside span:first-child {
+    border-top-left-radius:10px;
+    width: 120px;
+    left: 0;background:#f00f2f;}
+#cards-main aside span:nth-child(2) {
+    width: 120px;
+    left: 135px;background:#554050;}
+#cards-main aside span:nth-child(3) {
+    border-bottom-right-radius:10px;
+    width: 120px;
+    right: 0px;background:#00e636;}
+
+#cards-main article {
+    perspective: 1000px;
+    position: relative;
+    height: 300px;
+    width: 400px;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.card {
+    position: absolute;
+    opacity: 0;
+    font-size: 1.5em;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    transform: translateX(50%) rotateY(-10deg);
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.card.active {
+    cursor: pointer;
+    opacity: 1;
+    z-index: 10;
+    transform: translateX(0) rotateY(0deg);
+}
+
+.card.left {
+    transform: translateX(-50%) rotateY(10deg);
+}
+
+.inner-card {
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    margin: 10px;
+    height: 280px;
+    width: 380px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.4s ease;
+}
+
+.card.show-answer .inner-card {
+    transform: rotateX(180deg);
+}
+
+.inner-card-front,
+.inner-card-back {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background: #fff;
+}
+
+.inner-card-front {
+    transform: rotateX(0deg);
+    z-index: 2;
+}
+
+.inner-card-back {
+    transform: rotateX(180deg);
+}
+
+.inner-card-front::after,
+.inner-card-back::after {
+    content: '\f021  Flip';
+    font-family: 'Font Awesome 5 Free', Lato, sans-serif;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    color: #ddd;
+}
+
+#card-create {
+    opacity: 0;
+    z-index: -1;
+    background-color: #f0f0f0;
+    border-top: 2px solid #eee;
+    padding: 10px 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    transition: 0.3s ease;
+}
+#card-create.show {
+    opacity: 1;
+    z-index: 2;
+}
+
+#card-create header i {
+    position: absolute;
+    text-align: center;
+    top: 15px;
+    right: 30px;
+}
+
+#card-create article {
+    margin:16px 0 0;
+    padding:12px;
+    background:#fff;
+    border-radius:20px 0;
+    box-shadow:0 12px 8px -9px #555;
+}
+
+#card-create article label{
+    display: block;
+    margin: 0 0 10px;
+}
+
+#card-create article textarea {
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    font-size: 16px;
+    padding: 5px;
+    width: 350px;
+    max-width: 100%;
+}
+
+#card-create article input {
+    margin:5px auto;
+    padding:3px 10px 2px; /*输入文本与控件的间距*/
+    color:#555;
+    font-size:.8em;
+    outline:none; /*去掉默认的轮廓线*/
+    border-radius:10px 0 10px 0;
+}
+
+#card-create article input:focus{
+    cursor: pointer;
+}
+
+#cards-all {
+    opacity: 0;
+    z-index: -1;
+    background-color: #f0f0f0;
+    border-top: 2px solid #eee;
+    padding: 10px 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    transition: 0.3s ease;
+}
+#cards-all.show {
+    opacity: 1;
+    z-index: 2;
+}
+#cards-all span {
+    position: absolute;
+    font-family:"Source Sans Pro", helvetica, sans-serif;
+    width: 105px;
+    padding:.25em .3em;
+    font-weight:600;
+    text-align: center;
+    height: 30px;
+    top: 15px;
+    border-top-left-radius:10px;
+    left: 10px;
+    background:hsl(300, 50%, 50%);
+}
+
+#cards-all span:hover {
+    color: #555;
+    border-color: #fff;
+    border: 0;
+    cursor: pointer;
+    opacity:1; visibility:visible; /*两个属性都会产生过渡动画*/
+}
+
+#cards-all header i {
+    position: absolute;
+    top: 15px;
+    right: 30px;
+}
+
+#cards-all nav {
+    position: relative;
+    height: 30px;
+    margin: 10px 0;
+    background: #fff;
+    border-radius: 20px 0px 20px 0px;
+    box-shadow: 0 12px 8px -9px #555;
+    padding: 1px;
+}
+
+#cards-all nav input {
+    width: 70px;
+    padding:2px 0 3px 5px;
+    border-radius:0px 0px 10px 0px;
+    font-family:"Source Sans Pro", helvetica, sans-serif;
+    font-weight: 400; font-size:1em;
+    color:#888;
+    outline:none; /*去掉默认的轮廓线*/
+    transition:.3s width; /*搜索框过渡动画*/
+    position: absolute;
+    left: 170px;
+}
+
+#cards-all nav select {
+    width: 70px;
+    padding:2px 0 3px 5px;
+    border-radius:10px 0px 0px 0px;
+    font-family:"Source Sans Pro", helvetica, sans-serif;
+    font-weight: 400; font-size:1em;
+    color:black;
+    position: absolute;
+    left: 100px;
+}
+
+#cards-all nav input:focus { width:140px;}/*在获得焦点时扩展到这么宽*/
+
+.etyma {
+    background-color: transparent;
+    border: 1px solid #9fa4a8;
+    border-radius: 10px;
+    margin: 5px auto;
+    padding: 30px;
+    width: 90%;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s ease;
+}
+
+
+.etyma.active {
+    background-color: #fff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.etyma.active::before,
+.etyma.active::after {
+    content: '\f075';
+    font-family: 'Font Awesome 5 Free';
+    color: #2ecc71;
+    font-size: 7rem;
+    position: absolute;
+    opacity: 0.2;
+    top: 20px;
+    left: 20px;
+    z-index: 0;
+}
+.etyma.active::before {
+    color: #3498db;
+    top: -10px;
+    left: -30px;
+    transform: rotateY(180deg);
+}
+
+.etyma-text {
+    display: none;
+    margin: 30px 0 0;
+}
+
+.etyma.active .etyma-text {
+    display: block;
+}
+
+.etyma-toggle {
+    background-color: transparent;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    padding: 0;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    height: 30px;
+    width: 30px;
+}
+
+
+.etyma-toggle:focus {
+    outline: 0;
+}
+
+.etyma-toggle .fa-times {
+    display: none;
+}
+
+.etyma.active .etyma-toggle .fa-times {
+    color: #fff;
+    display: block;
+}
+
+.etyma.active .etyma-toggle .fa-chevron-down {
+    display: none;
+}
+
+.etyma.active .etyma-toggle {
+    background-color: #9fa4a8;
+}
+
+.fa-times:before{content:"✖️"}
+.fa-chevron-down:before{content:"⬇️"}

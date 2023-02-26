@@ -140,9 +140,9 @@ body {
     background-color: #9fa4a8;
 }
 
-#prev>i::before{content:"⬅️"}
-#next>i::before{content:"➡️"}
-#etyma-radom>i:before{content:"🔄"}
+#prev>i::before{content:"⬅️";}
+#next>i::before{content:"➡️";}
+#etyma-radom>i:before{content:"🔄";}
 
 #prev, #next, #etyma-radom{
     border: none;
