@@ -53,6 +53,22 @@ const cardsId = getCardsId();
 /*****************************************************************
  ** 函数定义
  *****************************************************************/
+/////////////////////////////////////////////////////////////////
+// 新的 ID 生成
+function generateID() {
+    let id;
+    if (cardsId.length == 0) {
+        id = cardsData.length + 1;
+        cardsId.push(id+1);
+    } else {
+        id = cardsId.pop();
+        if (cardsId.length == 0) {
+            cardsId.push(id+1);
+        }
+    }
+    return id;
+}
+
 ////////////////////////////////////////////////////////////////
 // 数据的导入、导出，保存与恢复
 // Import other card 从外部导入
@@ -67,6 +83,7 @@ function getExtraCardsData(input) {
         etymas = JSON.parse(reader.result);
         etymas.forEach((data) => {
             createCard(data);
+            data.id = generateID();
             cardsData.push(data);
             setCardsData(cardsData);
         });
@@ -385,15 +402,8 @@ addCardBtn.addEventListener('click', () => {
     if (!New) {
         id = cardsData[currentActiveCard].id;
     } else {
-        if (cardsId.length == 0) {
-            id = cardsData.length + 1;
-            cardsId.push(id+1);
-        } else {
-            id = cardsId.pop();
-            if (cardsId.length == 0) {
-                cardsId.push(id+1);
-            }
-        }}
+        id = generateID();
+    }
     if (name.trim() && value.trim()) {
         const newCard = {
             id:`${id}`,
@@ -419,7 +429,7 @@ addCardBtn.addEventListener('click', () => {
             if (insertIndex > cardsData.length) {
                 insertIndex = cardsData.length;
             }
-            while(cardsData[insertIndex-1].id > id) {
+            while(insertIndex != 0 && cardsData[insertIndex-1].id > id) {
                 insertIndex--;
             }
             cardsData.splice(insertIndex, 0, newCard);
@@ -561,7 +571,8 @@ hideCards.addEventListener('click', () => cardsAllContainer.classList.remove('sh
 createCards();
 
 listAllCards();
-
-if (typeof(cardsData[0].marker) != "undefined" && (cardsData[0].marker)) {
+if (cardsData.length > 0 &&
+    typeof(cardsData[0].marker) != "undefined" &&
+    (cardsData[0].marker)) {
     markerBtn.classList.add('btn-marker');
 }
