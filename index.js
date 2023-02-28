@@ -573,11 +573,15 @@ filterCard.addEventListener('submit', (e) => {
 // 显示全部列表
 const cardsAllContainer = document.getElementById('cards-all');
 // Show add container
-listCards.addEventListener('click', () => cardsAllContainer.classList.add('show'));
+listCards.addEventListener('click', () => {
+    cardsAllContainer.classList.add('show');
+    cardsAllContainer.style.display = "";
+});
 
 // Hide add container
 hideCards.addEventListener('click', () => {
     cardsAllContainer.classList.remove('show');
+    cardsAllContainer.style.display = "none";
     addMarker();
 });
 
@@ -588,3 +592,4 @@ hideCards.addEventListener('click', () => {
 createCards();
 addMarker();
 listAllCards();
+cardsAllContainer.style.display = "none";

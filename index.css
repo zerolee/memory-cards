@@ -148,6 +148,7 @@ i:hover {cursor: pointer;}
     left: 0px;
     height: 100%;
     width: 100%;
+    touch-action: none;
     transform: translateX(50%) rotateY(-10deg);
     transition: transform 0.4s ease, opacity 0.4s ease;
 }
