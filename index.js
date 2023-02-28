@@ -84,7 +84,14 @@ function getExtraCardsData(input) {
         etymas.forEach((data) => {
             createCard(data);
             data.id = generateID();
-            cardsData.push(data);
+            let insertIndex = data.id - 1;
+            if (insertIndex > cardsData.length) {
+                insertIndex = cardsData.length;
+            }
+            while(insertIndex != 0 && cardsData[insertIndex-1].id > data.id) {
+                insertIndex--;
+            }
+            cardsData.splice(insertIndex, 0, data);
             setCardsData(cardsData);
         });
     }
@@ -228,8 +235,6 @@ function createCard(data, index) {
         return false;
     }
 
-    etymaMarker(data);
-
     // Add to DOM cards
     cardsEl.push(card);
 
@@ -268,12 +273,12 @@ function specifyCards(cardNum, cardCount) {
         currentActiveCard = cardNum;
         cardsEl[currentActiveCard].className = 'card active';
         updateCurrentText();
-        etymaMarker(cardsData[currentActiveCard]);
+        addMarker();
     }
 }
 
 
-// 收藏了才加颜色，否则是纯白色
+// 根据相应的按钮是否添加颜色来设置相应的数据
 function markerCard(index) {
     let data = cardsData[index];
     if (typeof(data.marker) != "undefined" && data.marker) {
@@ -285,13 +290,15 @@ function markerCard(index) {
     localStorage.setItem('cards', JSON.stringify(cardsData));
 }
 
-
-function etymaMarker(data) {
-    if (typeof(data.marker) != "undefined" && data.marker) {
-        markerBtn.classList.add('btn-marker');
-    } else {
-        markerBtn.classList.remove('btn-marker');
-    }
+// 为 Card 添加颜色的
+function addMarker() {
+    if (cardsData.length > 0 &&
+        typeof(cardsData[currentActiveCard].marker) != "undefined" &&
+        (cardsData[currentActiveCard].marker)) {
+            markerBtn.classList.add('btn-marker');
+        } else {
+            markerBtn.classList.remove('btn-marker');
+        }
 }
 
 // List a single card in DOM
@@ -354,8 +361,14 @@ function listAllCards(filter, select) {
     cardsMarker.forEach(marker =>
         marker.addEventListener('click', () => {
             marker.classList.toggle('btn-marker');
-            const index = marker.parentNode.firstElementChild.textContent.split('.')[0];
-            markerCard(index - 1);
+            const id = marker.parentNode.firstElementChild.textContent.split('.')[0];
+            let index = id - 1;
+            while (index > 0 && cardsData[index].id != id) {
+                index--;
+            }
+            if (cardsData[index].id == id) {
+                markerCard(index);
+            }
         }));
     foldCards.addEventListener('click', () => {
         cardsToggle.forEach(toggle => toggle.parentNode.classList.toggle('active'));
@@ -463,7 +476,7 @@ deleteBtn.addEventListener('click', () => {
         }
         cardsEl[currentActiveCard].className = 'card active'
         updateCurrentText();
-        etymaMarker(cardsData[currentActiveCard]);
+        addMarker();
         // 存储数据，不刷新页面
         localStorage.setItem('cards', JSON.stringify(cardsData));
         localStorage.setItem('cardsId', JSON.stringify(cardsId));
@@ -503,7 +516,7 @@ prevBtn.addEventListener('click', () => {
     cardsEl[currentActiveCard].className = 'card active';
 
     updateCurrentText();
-    etymaMarker(cardsData[currentActiveCard]);
+    addMarker();
 });
 
 // Next button
@@ -519,7 +532,7 @@ nextBtn.addEventListener('click', () => {
     cardsEl[currentActiveCard].className = 'card active';
 
     updateCurrentText();
-    etymaMarker(cardsData[currentActiveCard]);
+    addMarker();
 });
 
 // 指定位置跳转
@@ -561,18 +574,17 @@ filterCard.addEventListener('submit', (e) => {
 const cardsAllContainer = document.getElementById('cards-all');
 // Show add container
 listCards.addEventListener('click', () => cardsAllContainer.classList.add('show'));
+
 // Hide add container
-hideCards.addEventListener('click', () => cardsAllContainer.classList.remove('show'));
+hideCards.addEventListener('click', () => {
+    cardsAllContainer.classList.remove('show');
+    addMarker();
+});
 
 
 /***************************************************************
  ** 主程序
  ****************************************************************/
 createCards();
-
+addMarker();
 listAllCards();
-if (cardsData.length > 0 &&
-    typeof(cardsData[0].marker) != "undefined" &&
-    (cardsData[0].marker)) {
-    markerBtn.classList.add('btn-marker');
-}
