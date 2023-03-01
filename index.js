@@ -2,6 +2,8 @@
 /*********************************
 /* DOM 元素获取
  *********************************/
+//////////////////////////////////////////////////////////////////
+// 主界面
 const cardsContainer = document.querySelector('#cards-main>article');
 const showBtn = document.querySelector('#cards-main>header>span:nth-child(3)');
 const editBtn = document.querySelector('#cards-main>nav>span:nth-child(1)');
@@ -15,7 +17,9 @@ const markerBtn = document.querySelector('#cards-main>nav>span:nth-child(7)');
 const clearBtn = document.querySelector('#cards-main>aside>span:nth-child(1)');
 const exportCards = document.querySelector('#cards-main>aside>span:nth-child(2)');
 const listCards = document.querySelector('#cards-main>aside>span:nth-child(3)');
+
 ////////////////////////////////////////////////////////////////
+// 创建/编辑 Card 界面
 const addContainer = document.getElementById('card-create');
 const addCardBtn = document.querySelector('#card-create>article>input');
 const hideBtn = document.querySelector('#card-create>header>i');
@@ -25,6 +29,7 @@ const etyma_example_name = document.getElementById('etyma-example-name');
 const etyma_example_value = document.getElementById('etyma-example-value');
 
 ////////////////////////////////////////////////////////////////
+// 根据条件显示 Card 界面
 const cardsAll = document.querySelector('#cards-all>article');
 const foldCards = document.querySelector('#cards-all>header>span');
 const hideCards = document.querySelector('#cards-all>header>i');
@@ -172,7 +177,7 @@ function createCard(data, index) {
         // 以使其定位是相对于 body 的
         // document.body.append(card);
 
-        // 现在球的中心在 (pageX, pageY) 坐标上
+        // 现在 Card 的中心在 (pageX, pageY) 坐标上
         function moveAt(pageX) {
             let left = pageX - shiftX;
             if (left > card.offsetWidth) {
@@ -184,8 +189,6 @@ function createCard(data, index) {
             }
         }
 
-        // moveAt(event.pageX);
-
         function onPointerMove(event) {
             card.style.cursor = 'move';
             moveAt(event.pageX);
@@ -194,46 +197,32 @@ function createCard(data, index) {
         // 2. 在 mousemove 事件上移动 card
         document.addEventListener('pointermove', onPointerMove);
 
+        // 恢复 Card 的状态
+        function restoreCardState() {
+            card.style.left = '';
+            document.removeEventListener('pointermove', onPointerMove);
+            card.onpointerup = null;
+            card.style.position = '';
+            card.style.cursor = cursor;
+            card.style.zIndex = zIndex;
+        }
+
+
         // 3. 放下 card，并移除不需要的处理程序
         card.onpointerup = function (event) {
-            if (event.pageX == shiftX) {
-                card.classList.toggle('show-answer');
-            }
+            if (event.pageX == shiftX) card.classList.toggle('show-answer');
+
             if (event.pageX - shiftX > card.offsetWidth/4) {
-                if (currentActiveCard == 0) {
-                    card.style.left = '0px';
-                } else {
-                    prevBtn.click();
-                }
+                prevBtn.click();
             } else if (event.pageX - shiftX < -card.offsetWidth/4){
-                if (currentActiveCard == cardsEl.length -1) {
-                    card.style.left = '0px';
-                } else {
-                    nextBtn.click();
-                }
-            } else {
-                card.style.left = '0px';
+                nextBtn.click();
             }
-            document.removeEventListener('pointermove', onPointerMove);
-            card.onpointerup = null;
-            card.style.position = '';
-            card.style.cursor = cursor;
-            card.style.zIndex = zIndex;
+            restoreCardState();
         }
 
-        card.onpointerleave = function () {
-            card.style.left = '0px';
-            document.removeEventListener('pointermove', onPointerMove);
-            card.onpointerup = null;
-            card.style.position = '';
-            card.style.cursor = cursor;
-            card.style.zIndex = zIndex;
-        }
+        card.onpointerleave = restoreCardState;
     }
-
-    card.ondragstart = function () {
-        return false;
-    }
+    card.ondragstart = () => false;
 
     // Add to DOM cards
     cardsEl.push(card);
@@ -278,8 +267,8 @@ function specifyCards(cardNum, cardCount) {
 }
 
 
-// 根据相应的按钮是否添加颜色来设置相应的数据
-function markerCard(index) {
+// 将按钮的颜色与实际保存的 marker 进行同步
+function syncMarker(index) {
     let data = cardsData[index];
     if (typeof(data.marker) != "undefined" && data.marker) {
         data.marker = false;
@@ -367,7 +356,7 @@ function listAllCards(filter, select) {
                 index--;
             }
             if (cardsData[index].id == id) {
-                markerCard(index);
+                syncMarker(index);
             }
         }));
     foldCards.addEventListener('click', () => {
@@ -498,7 +487,7 @@ editBtn.addEventListener('click', () => {
 // Marker
 markerBtn.addEventListener('click', () => {
     markerBtn.classList.toggle('btn-marker');
-    markerCard(currentActiveCard);
+    syncMarker(currentActiveCard);
 });
 
 ////////////////////////////////////////////////////////////////
@@ -573,15 +562,11 @@ filterCard.addEventListener('submit', (e) => {
 // 显示全部列表
 const cardsAllContainer = document.getElementById('cards-all');
 // Show add container
-listCards.addEventListener('click', () => {
-    cardsAllContainer.classList.add('show');
-    cardsAllContainer.style.display = "";
-});
+listCards.addEventListener('click', () => cardsAllContainer.classList.add('show'));
 
 // Hide add container
 hideCards.addEventListener('click', () => {
     cardsAllContainer.classList.remove('show');
-    cardsAllContainer.style.display = "none";
     addMarker();
 });
 
@@ -592,4 +577,3 @@ hideCards.addEventListener('click', () => {
 createCards();
 addMarker();
 listAllCards();
-cardsAllContainer.style.display = "none";
