@@ -273,7 +273,10 @@ i:hover {cursor: pointer;}
     border-radius:10px 0 10px 0;
 }
 
-#card-create article input:focus{
+#card-create article input:hover {
+    color: #555;
+    border-color: #000;
+    border: 3;
     cursor: pointer;
 }
 
@@ -357,6 +360,21 @@ i:hover {cursor: pointer;}
 }
 
 #cards-all nav input:focus { width:150px;}/*在获得焦点时扩展到这么宽*/
+
+#cards-all nav button {
+    width: 60px;
+    padding: 2px 0 3px 5px;
+    position: absolute;
+    border-radius:10px 0 10px 0;
+    right: 10%;
+}
+
+#cards-all nav button:hover {
+    color: #555;
+    border-color: #000;
+    border: 3;
+    cursor: pointer;
+}
 
 .etyma {
     background-color: transparent;

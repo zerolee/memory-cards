@@ -12,7 +12,7 @@ const prevBtn = document.querySelector('#cards-main>nav>i:nth-child(3)');
 const gotoCard = document.querySelector('#cards-main>nav form');
 const currentEl = document.querySelector('#cards-main>nav input');
 const nextBtn = document.querySelector('#cards-main>nav>i:nth-child(5)');
-const radomBtn = document.querySelector('#cards-main>nav>i:nth-child(6)');
+const randomBtn = document.querySelector('#cards-main>nav>i:nth-child(6)');
 const markerBtn = document.querySelector('#cards-main>nav>span:nth-child(7)');
 const clearBtn = document.querySelector('#cards-main>aside>span:nth-child(1)');
 const exportCards = document.querySelector('#cards-main>aside>span:nth-child(2)');
@@ -79,7 +79,6 @@ function generateID() {
 // Import other card 从外部导入
 function getExtraCardsData(input) {
     let file = input.files[0];
-
     let reader = new FileReader();
 
     reader.readAsText(file);
@@ -173,13 +172,11 @@ function createCard(data, index) {
         // 1. 准备移动：确保 absolute, 并通过设置 z-index 以确保 card
         card.style.position = 'absolute';
         card.style.zIndex = 100;
-        // 将其从父元素直接移动到 body 中
-        // 以使其定位是相对于 body 的
-        // document.body.append(card);
 
         // 现在 Card 的中心在 (pageX, pageY) 坐标上
-        function moveAt(pageX) {
-            let left = pageX - shiftX;
+        function onPointerMove(event) {
+            card.style.cursor = 'move';
+            let left = event.pageX - shiftX;
             if (left > card.offsetWidth) {
                 card.style.left = card.offsetWidth + 'px';
             } else if (left < -card.offsetWidth){
@@ -187,11 +184,6 @@ function createCard(data, index) {
             } else {
                 card.style.left = left + 'px';
             }
-        }
-
-        function onPointerMove(event) {
-            card.style.cursor = 'move';
-            moveAt(event.pageX);
         }
 
         // 2. 在 mousemove 事件上移动 card
@@ -206,7 +198,6 @@ function createCard(data, index) {
             card.style.cursor = cursor;
             card.style.zIndex = zIndex;
         }
-
 
         // 3. 放下 card，并移除不需要的处理程序
         card.onpointerup = function (event) {
@@ -533,8 +524,8 @@ gotoCard.addEventListener('submit', e => {
 
 
 
-// radom cards
-radomBtn.addEventListener('click', () => {
+// random cards
+randomBtn.addEventListener('click', () => {
     let first;
     do {
         first = Math.floor(Math.random()*cardsEl.length);
@@ -544,7 +535,6 @@ radomBtn.addEventListener('click', () => {
 
 ////////////////////////////////////////////////////////////////
 // 按一定规则来显示数据
-//
 filterCard.addEventListener('submit', (e) => {
     e.preventDefault();
     let elements = document.forms["card-filter"].elements;
