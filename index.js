@@ -27,6 +27,7 @@ const etyma_name = document.getElementById('etyma-name');
 const etyma_value = document.getElementById('etyma-value');
 const etyma_example_name = document.getElementById('etyma-example-name');
 const etyma_example_value = document.getElementById('etyma-example-value');
+const etyma_belong = document.getElementById('etyma-belong');
 
 ////////////////////////////////////////////////////////////////
 // 根据条件显示 Card 界面
@@ -158,6 +159,9 @@ function createCard(data, index) {
           <dt><b>example:</b></dt>
           <dd>${data.example.name}</dd>
           <dd>${data.example.value}</dd>
+
+          <dt><b>belong:</b></dt>
+          <dd>${data.belong}</dd>
         </dl>
       </div>
     </div>
@@ -291,7 +295,8 @@ function listCard(data) {
     <span ${classMarker}>标记</span>
     <p class="etyma-text">
     ${data.name}:&nbsp;${data.value}<br />
-    ${data.example.name}:&nbsp;${data.example.value}
+    ${data.example.name}:&nbsp;${data.example.value}<br />
+    belong: ${data.belong}
     </p>
     <button class="etyma-toggle">
     <i>⬇️</i>
@@ -392,8 +397,10 @@ addCardBtn.addEventListener('click', () => {
     const name = etyma_name.value;
     const value = etyma_value.value;
     let id = 1;
+    let marker = false;
     if (!New) {
         id = cardsData[currentActiveCard].id;
+        marker = cardsData[currentActiveCard].marker;
     } else {
         id = generateID();
     }
@@ -406,14 +413,15 @@ addCardBtn.addEventListener('click', () => {
                 name: etyma_example_name.value,
                 value:etyma_example_value.value
             },
-            belong: 'nil',
-            marker:false
+            belong: etyma_belong.value,
+            marker:`${marker}`
         };
 
         etyma_name.value = '';
         etyma_value.value = '';
         etyma_example_name.value = '';
         etyma_example_value.value = '';
+        etyma_belong.value = '';
 
         addContainer.classList.remove('show');
         if (New) {
@@ -441,6 +449,7 @@ hideBtn.addEventListener('click', () => {
     etyma_value.value = '';
     etyma_example_name.value = '';
     etyma_example_value.value = '';
+    etyma_belong.value = '';
     document.querySelector('#card-create>header>h2').firstChild.replaceWith('Add New Card');
 });
 
@@ -471,6 +480,10 @@ editBtn.addEventListener('click', () => {
     etyma_value.value = cardsData[currentActiveCard].value;
     etyma_example_name.value = cardsData[currentActiveCard].example.name;
     etyma_example_value.value = cardsData[currentActiveCard].example.value;
+    etyma_belong.value = cardsData[currentActiveCard].belong;
+    if (etyma_belong.value == 'nil') {
+        etyma_belong.value = '';
+    }
     New = false;
     document.querySelector('#card-create>header>h2').firstChild.replaceWith('Edit Cards');
 });

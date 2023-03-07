@@ -345,7 +345,7 @@ i:hover {cursor: pointer;}
     outline:none; /*去掉默认的轮廓线*/
     transition:.3s width; /*搜索框过渡动画*/
     position: absolute;
-    left: 170px;
+    left: 80px;
 }
 
 #cards-all nav select {
@@ -356,7 +356,7 @@ i:hover {cursor: pointer;}
     font-weight: 400; font-size:1em;
     color:black;
     position: absolute;
-    left: 100px;
+    left: 10px;
 }
 
 #cards-all nav input:focus { width:150px;}/*在获得焦点时扩展到这么宽*/
