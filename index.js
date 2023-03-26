@@ -77,6 +77,20 @@ function generateID() {
 
 ////////////////////////////////////////////////////////////////
 // 数据的导入、导出，保存与恢复
+function handleData(data) {
+    createCard(data);
+    data.id = generateID();
+    let insertIndex = data.id - 1;
+    if (insertIndex > cardsData.length) {
+        insertIndex = cardsData.length;
+    }
+    while(insertIndex != 0 && cardsData[insertIndex-1].id > data.id) {
+        insertIndex--;
+    }
+    cardsData.splice(insertIndex, 0, data);
+    setCardsData(cardsData);
+}
+
 // Import other card 从外部导入
 function getExtraCardsData(input) {
     let file = input.files[0];
@@ -86,38 +100,15 @@ function getExtraCardsData(input) {
     let etymas;
     reader.onload = function () {
         etymas = JSON.parse(reader.result);
-        etymas.forEach((data) => {
-            createCard(data);
-            data.id = generateID();
-            let insertIndex = data.id - 1;
-            if (insertIndex > cardsData.length) {
-                insertIndex = cardsData.length;
-            }
-            while(insertIndex != 0 && cardsData[insertIndex-1].id > data.id) {
-                insertIndex--;
-            }
-            cardsData.splice(insertIndex, 0, data);
-            setCardsData(cardsData);
-        });
+        etymas.forEach(handleData);
     }
 }
 
+// 从网络导入
 function getDataFromNet(url) {
     fetch(url)
         .then(response => response.json())
-        .then(etymas => etymas.forEach((data) => {
-            createCard(data);
-            data.id = generateID();
-            let insertIndex = data.id - 1;
-            if (insertIndex > cardsData.length) {
-                insertIndex = cardsData.length;
-            }
-            while(insertIndex != 0 && cardsData[insertIndex-1].id > data.id) {
-                insertIndex--;
-            }
-            cardsData.splice(insertIndex, 0, data);
-            setCardsData(cardsData);
-        }));
+        .then(etymas => etymas.forEach(handleData));
 }
 
 // Export cards 导出到外部
@@ -340,7 +331,11 @@ function listAllCards(filter, select) {
                 result = item.name.indexOf(ids[0]) != -1;
             } else {
                 if (ids.length == 1) {
-                    result = (item.id == ids[0]);
+                    if (select == 'belong') {
+                        result = (item.belong == ids[0]);
+                    } else {
+                        result = (item.id == ids[0]);
+                    }
                 } else {
                     result = parseInt(item.id) >= parseInt(ids[0]) &&
                         parseInt(item.id) <= parseInt(ids[1]);

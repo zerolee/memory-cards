@@ -345,11 +345,11 @@ i:hover {cursor: pointer;}
     outline:none; /*去掉默认的轮廓线*/
     transition:.3s width; /*搜索框过渡动画*/
     position: absolute;
-    left: 80px;
+    left: 85px;
 }
 
 #cards-all nav select {
-    width: 70px;
+    width: 75px;
     padding:2px 0 3px 5px;
     border-radius:10px 0px 0px 0px;
     font-family:"Source Sans Pro", helvetica, sans-serif;
