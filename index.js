@@ -102,6 +102,24 @@ function getExtraCardsData(input) {
     }
 }
 
+function getDataFromNet(url) {
+    fetch(url)
+        .then(response => response.json())
+        .then(etymas => etymas.forEach((data) => {
+            createCard(data);
+            data.id = generateID();
+            let insertIndex = data.id - 1;
+            if (insertIndex > cardsData.length) {
+                insertIndex = cardsData.length;
+            }
+            while(insertIndex != 0 && cardsData[insertIndex-1].id > data.id) {
+                insertIndex--;
+            }
+            cardsData.splice(insertIndex, 0, data);
+            setCardsData(cardsData);
+        }));
+}
+
 // Export cards 导出到外部
 function exportCardsData() {
     let link = document.createElement('a');
@@ -367,7 +385,11 @@ function listAllCards(filter, select) {
 // 数据导入、导出、清空
 // 点击导入外部数据按钮会自动模拟成点击 input 按钮
 document.querySelector('#cards-main span').addEventListener('click', () => {
-    document.querySelector('#cards-main input').click();
+    if (confirm("从本地导入?")) {
+        document.querySelector('#cards-main input').click();
+    } else {
+        getDataFromNet(prompt('远程地址来源:', 'https://raw.githubusercontent.com/zerolee/memory-cards/main/etyma.json'));
+    }
 });
 
 //  button 导出
